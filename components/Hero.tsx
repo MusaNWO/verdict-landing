@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import WaitlistForm from "./WaitlistForm";
 
 type FloatChipStyle = CSSProperties & { "--r"?: string };
 
@@ -16,13 +17,13 @@ export default function Hero() {
             the 45-minute &ldquo;idk, what do <em>you</em> want?&rdquo; spiral
             into one final answer — in about 30 seconds.
           </p>
-          <div className="hero__cta reveal d2">
-            <a className="btn btn--lg" href="#get">
-              Settle a debate — free
-            </a>
-            <a className="btn btn--ghost btn--lg" href="#how">
-              How it works
-            </a>
+          <div className="reveal d2">
+            <WaitlistForm />
+            <div className="hero__cta-secondary">
+              <a className="hero__link" href="#how">
+                or see how it works ↓
+              </a>
+            </div>
           </div>
           <div className="hero__meta reveal d3">
             <span>
