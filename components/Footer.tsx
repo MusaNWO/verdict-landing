@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="wrap">
         <div className="footer__in">
           <div className="footer__brand">
-            <a className="brand" href="#top">
+            <a className="brand" href="/">
               Verdict<span>.</span>
             </a>
             <p>
@@ -15,10 +15,10 @@ export default function Footer() {
           <div className="footer__cols">
             <div className="fcol">
               <h5>Product</h5>
-              <a href="#how">How it works</a>
-              <a href="#mechanics">Ways to decide</a>
-              <a href="#pricing">Pricing</a>
-              <a href="#teams">For teams</a>
+              <a href="/#how">How it works</a>
+              <a href="/#mechanics">Ways to decide</a>
+              <a href="/#pricing">Pricing</a>
+              <a href="/#teams">For teams</a>
             </div>
             <div className="fcol">
               <h5>Company</h5>
@@ -30,9 +30,9 @@ export default function Footer() {
             <div className="fcol">
               <h5>Support</h5>
               <a href="#">Help center</a>
-              <a href="#">Privacy</a>
+              <a href="/privacy">Privacy</a>
               <a href="#">Terms</a>
-              <a href="#">Contact</a>
+              <a href="mailto:privacy@verdictapp.co">Contact</a>
             </div>
           </div>
         </div>
