@@ -9,24 +9,29 @@ const LETTERS = ["V", "E", "R", "D", "I", "C", "T"];
 const SESSION_KEY = "verdict-intro-seen";
 
 export default function SplashIntro() {
-  const [mounted, setMounted] = useState(false);
-  const [playing, setPlaying] = useState(false);
+  // Start `playing: true` so SSR + first client render both show the splash
+  // markup immediately. Prevents the "page flashes for 1-2s before splash"
+  // gap between hydration and useEffect running.
+  const [playing, setPlaying] = useState(true);
   const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    // Already seen this session? Hide immediately, don't play the intro.
     try {
-      if (sessionStorage.getItem(SESSION_KEY)) return;
+      if (sessionStorage.getItem(SESSION_KEY)) {
+        setPlaying(false);
+        return;
+      }
     } catch {
       // Private browsing may throw on sessionStorage — treat as "not seen"
     }
     // Respect reduced motion — skip the whole intro if the user prefers less
     // movement, and just mark it seen so the landing loads immediately.
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      setPlaying(false);
       try { sessionStorage.setItem(SESSION_KEY, "1"); } catch {}
       return;
     }
-    setPlaying(true);
     document.body.style.overflow = "hidden";
     // Splash sequence lands by ~2500ms; give another 300ms of hold, then
     // start the exit transition. Total time to landing = ~3400ms.
@@ -53,7 +58,7 @@ export default function SplashIntro() {
     }, 700);
   };
 
-  if (!mounted || !playing) return null;
+  if (!playing) return null;
 
   return (
     <div

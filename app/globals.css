@@ -2826,10 +2826,17 @@ html.has-custom-cursor * { cursor: none !important; }
   animation-delay: 2000ms;
 }
 
-/* Splash — true-center the VERDICT wordmark. Its trailing letter-spacing
-   (11.5px after the T) shifts the block visually right of center — offset
-   with a matching negative right margin so it optically centers. */
-.splash__word { margin-right: -11.5px; }
+/* Splash — true-center the VERDICT wordmark. Letter-spacing adds trailing
+   space after the last letter which shifts the flex-item box right of
+   optical center. `justify-content: center` on the flex row + a negative
+   right margin (~= letter-spacing) trims that trailing space so the word
+   and underline sit on the same vertical axis as the badge. */
+.splash__stage { text-align: center; }
+.splash__word {
+  justify-content: center;
+  margin-right: -11.5px;
+  padding-left: 11.5px;
+}
 
 /* ── Subtle brand accent drifters ────────────────── */
 /* Three tiny orange gavels drifting slowly. Kept at 4% opacity + blur so
@@ -2931,8 +2938,11 @@ html.has-custom-cursor * { cursor: none !important; }
   .hero__meta { margin-top: 16px; font-size: 12px; gap: 8px 14px; }
   .phone, .phone-wrap, .phone-scene { width: 240px; }
   .float-chip { font-size: 10.5px; padding: 5px 9px; }
-  .waitlist__row { flex-direction: column; align-items: stretch; gap: 10px; }
-  .waitlist__btn { width: 100%; }
+  /* Keep waitlist input + button side-by-side on phone too — input shrinks
+     to share the row instead of stacking above the button. */
+  .waitlist__row { flex-direction: row; align-items: stretch; gap: 8px; flex-wrap: nowrap; }
+  .waitlist__input { flex: 1 1 0; min-width: 0; }
+  .waitlist__btn { width: auto; flex: 0 0 auto; }
   .statbar__in { gap: 10px; padding: 18px 12px; }
   .stat b { font-size: 26px; }
   .stat span { font-size: 11px; letter-spacing: 0.04em; }
