@@ -99,14 +99,7 @@ export default function Nav() {
           </div>
           <div className="nav-drawer__cta">
             <a
-              className="btn btn--ghost"
-              href="/#how"
-              onClick={() => setOpen(false)}
-            >
-              See how it works
-            </a>
-            <a
-              className="btn"
+              className="btn btn--ink"
               href="/#get"
               onClick={() => setOpen(false)}
             >

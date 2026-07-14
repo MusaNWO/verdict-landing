@@ -15,8 +15,8 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ["productivity", "lifestyle", "social"],
     icons: [
       {
-        src: "/icon.svg",
-        type: "image/svg+xml",
+        src: "/verdict-logo.png",
+        type: "image/png",
         sizes: "any",
         purpose: "any",
       },

@@ -9,6 +9,11 @@ type FloatChipStyle = CSSProperties & {
   "--delay"?: string;
 };
 
+// Positioning moved from inline styles to CSS classes (.float-chip--1..6)
+// so mobile media queries can override the desktop absolute positions
+// without fighting inline-style specificity. Only animation-related
+// custom props stay inline.
+
 export default function Hero() {
   return (
     <header className="hero" id="top">
@@ -67,11 +72,9 @@ export default function Hero() {
                 by the phone silhouette. `right` uses fixed pixels rather than
                 percent so widths stay stable across breakpoints. */}
             <div
-              className="float-chip"
+              className="float-chip float-chip--1"
               style={
                 {
-                  top: "6%",
-                  right: "calc(100% + 20px)",
                   "--r": "-6deg",
                   "--in-x": "160px",
                   "--in-y": "160px",
@@ -82,11 +85,9 @@ export default function Hero() {
               <span className="em">🌮</span>Tacos
             </div>
             <div
-              className="float-chip"
+              className="float-chip float-chip--2"
               style={
                 {
-                  top: "8%",
-                  left: "calc(100% + 20px)",
                   "--r": "7deg",
                   "--in-x": "-160px",
                   "--in-y": "160px",
@@ -97,11 +98,9 @@ export default function Hero() {
               <span className="em">🍜</span>Ramen
             </div>
             <div
-              className="float-chip"
+              className="float-chip float-chip--3"
               style={
                 {
-                  top: "44%",
-                  left: "calc(100% + 20px)",
                   "--r": "5deg",
                   "--in-x": "-180px",
                   "--in-y": "0px",
@@ -112,11 +111,9 @@ export default function Hero() {
               <span className="em">🎮</span>Mario Kart
             </div>
             <div
-              className="float-chip"
+              className="float-chip float-chip--4"
               style={
                 {
-                  bottom: "8%",
-                  left: "calc(100% + 20px)",
                   "--r": "-5deg",
                   "--in-x": "-160px",
                   "--in-y": "-160px",
@@ -127,11 +124,9 @@ export default function Hero() {
               <span className="em">🍣</span>Sushi
             </div>
             <div
-              className="float-chip"
+              className="float-chip float-chip--5"
               style={
                 {
-                  bottom: "8%",
-                  right: "calc(100% + 20px)",
                   "--r": "5deg",
                   "--in-x": "160px",
                   "--in-y": "-160px",
@@ -142,11 +137,9 @@ export default function Hero() {
               <span className="em">🎳</span>Bowling
             </div>
             <div
-              className="float-chip"
+              className="float-chip float-chip--6"
               style={
                 {
-                  top: "44%",
-                  right: "calc(100% + 20px)",
                   "--r": "-4deg",
                   "--in-x": "200px",
                   "--in-y": "0px",

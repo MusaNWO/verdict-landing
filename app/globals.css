@@ -405,6 +405,15 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
   .float-chip { animation: none; }
 }
 
+/* Per-chip positioning (matches the six chips in Hero.tsx). Moved from
+   inline styles so mobile media queries can flip them to `static` cleanly. */
+.float-chip--1 { top: 6%;  right: calc(100% + 20px); }
+.float-chip--2 { top: 8%;  left:  calc(100% + 20px); }
+.float-chip--3 { top: 44%; left:  calc(100% + 20px); }
+.float-chip--4 { bottom: 8%; left:  calc(100% + 20px); }
+.float-chip--5 { bottom: 8%; right: calc(100% + 20px); }
+.float-chip--6 { top: 44%; right: calc(100% + 20px); }
+
 /* ── Phone mockup ────────────────────────────────── */
 /* Wrapper picks up mouse events for the framer-motion tilt in Phone.tsx.
    Own perspective so the phone tilts even if the outer perspective gets
@@ -2037,6 +2046,21 @@ html.has-custom-cursor * { cursor: none !important; }
   .hero__grid { grid-template-columns: 1fr; gap: 12px; }
   .hero__art { min-height: 480px; margin-top: 18px; }
   .mech-grid, .price-grid, .quotes { grid-template-columns: 1fr; }
+  /* Cap tier + quote card width so they don't stretch full-viewport
+     awkwardly on tablets — switch to flex column so max-width + margin
+     auto reliably centers each card (grid + framer-motion can be
+     finicky about justify-items on transformed children). */
+  .price-grid, .quotes {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+  .price-grid .tier, .quotes .quote {
+    max-width: 480px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
   /* Neon stage tightens on smaller screens. */
   .stage { min-height: 420px; padding: 70px 12px; }
   .stage__lines { height: 130px; }
@@ -2864,4 +2888,260 @@ html.has-custom-cursor * { cursor: none !important; }
     z-index: 1;
     background: radial-gradient(ellipse at center, transparent 55%, rgba(28,24,32,0.06) 100%);
   }
+}
+
+/* ── Responsive polish ────────────────────────────────
+   Fills gaps between the existing breakpoints (940 / 768 / 720 / 560 / 480)
+   so the layout also reads clean on: large phones (≤640), small Androids /
+   iPhone SE (≤380), and small laptops / iPad landscape (≤1180). */
+
+/* Large phone / small tablet portrait (Pixel 7, iPhone Pro Max landscape) */
+@media (max-width: 640px) {
+  .section { padding: clamp(56px, 10vw, 96px) 0; }
+  .statbar__in { gap: 14px; padding: 22px 16px; }
+  .stat b { font-size: 30px; }
+  .stat span { font-size: 12px; }
+  .hero__meta { gap: 12px 16px; font-size: 12.5px; }
+  .footer__cols { gap: 24px 36px; }
+  .fcol h5 { font-size: 12px; }
+  .fcol__link { font-size: 14px; }
+  .marquee { padding: 14px 0; }
+  .marquee__item { font-size: 15px; gap: 10px; }
+}
+
+/* Small phone (iPhone SE, small Android 360×640) */
+@media (max-width: 380px) {
+  .wrap { padding: 0 14px; }
+  .nav__row { height: 62px; }
+  .nav__brand-word { font-size: 22px; }
+  .nav__brand-mark { width: 26px !important; height: 26px !important; }
+  .nav-drawer { top: 62px; }
+  .btn { font-size: 15px; padding: 12px 18px; }
+  .btn--lg { font-size: 16px; padding: 14px 22px; border-radius: 14px; }
+  .hero { padding-top: 24px; }
+  .hero h1 { font-size: 30px; overflow-wrap: break-word; }
+  .hero h1 .hl { white-space: normal; }
+  .hero__sub { font-size: 15.5px; margin-top: 18px; }
+  .hero__cta { margin-top: 24px; }
+  .hero__meta { margin-top: 16px; font-size: 12px; gap: 8px 14px; }
+  .phone, .phone-wrap, .phone-scene { width: 240px; }
+  .float-chip { font-size: 10.5px; padding: 5px 9px; }
+  .waitlist__row { flex-direction: column; align-items: stretch; gap: 10px; }
+  .waitlist__btn { width: 100%; }
+  .statbar__in { gap: 10px; padding: 18px 12px; }
+  .stat b { font-size: 26px; }
+  .stat span { font-size: 11px; letter-spacing: 0.04em; }
+  .sec-head h2 { font-size: 30px; }
+  .pcard { padding: 20px; }
+  .tier { padding: 26px 22px; }
+  .tier__name { font-size: 22px; }
+  .faq-item__q { font-size: 15px; }
+  .faq-item__toggle { padding: 14px 14px; gap: 10px; }
+  .faq-item__num { font-size: 11.5px; min-width: 20px; }
+  .faq-item__a { padding: 2px 14px 16px 44px; font-size: 13.5px; }
+  .stage { padding: 48px 12px; min-height: 340px; }
+  .stage-step__n { width: 54px; height: 54px; font-size: 22px; }
+  .wv-chip {
+    font-size: 10px;
+    padding: 4px 8px;
+    gap: 4px;
+    left: 82%;
+  }
+  .wv-chip__ico { width: 20px; height: 20px; font-size: 11px; border-radius: 6px; }
+  .wv-chip__dot { width: 5px; height: 5px; box-shadow: 0 0 0 2px rgba(255,77,46,0.2); }
+  .quote { padding: 22px 20px; }
+  .cta-final .btn--lg { font-size: 16px; padding: 15px 22px; }
+  .footer { padding: 48px 0 24px; }
+  .footer__cols { gap: 22px 28px; }
+}
+
+/* Nav drawer — active whenever burger menu is visible (≤940px).
+   Narrower centered card, shorter menu rows, single black CTA that
+   doesn't stretch across the whole tablet width. */
+@media (max-width: 940px) {
+  .nav-drawer__panel {
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -14px) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 300px !important;
+    padding: 12px 14px 14px !important;
+    gap: 8px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 0 var(--ink) !important;
+  }
+  .nav-drawer.is-open .nav-drawer__panel {
+    transform: translate(-50%, 0) !important;
+  }
+  .nav-drawer__links {
+    margin: 0 !important;
+  }
+  .nav-drawer__links a {
+    font-size: 13px !important;
+    padding: 7px 6px !important;
+  }
+  .nav-drawer__cta {
+    flex-direction: row !important;
+    gap: 8px !important;
+  }
+  .nav-drawer__cta .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 13px !important;
+    padding: 9px 12px !important;
+    border-radius: 10px !important;
+    border-width: 2px !important;
+    box-shadow: 0 3px 0 var(--ink) !important;
+    text-align: center;
+  }
+}
+
+/* ── Section-specific mobile polish ───────────────────
+   Fixes discovered from real 400×714 device-toolbar screenshots:
+   - Hero float chips overflowed the phone at small viewports
+   - ProSplit floating pcards clipped past the cluster edge
+   - Final CTA store buttons stacked when they should stay inline */
+
+/* ≤560: hide chip options entirely — phone alone reads cleanly.
+   Also scale down the phone screen content so text stays readable
+   without overflowing the 260px mobile phone body. */
+@media (max-width: 560px) {
+  .float-chip { display: none !important; }
+  /* Space between hero copy and the phone — chips ki wajah se pehle
+     min-height 640px+ tha, ab wo hata to phone copy ke bilkul saath
+     chipak gaya. Zaroori vertical breathing room deta hun. */
+  .hero__art {
+    min-height: 0;
+    margin-top: 48px;
+    padding: 24px 0 36px;
+  }
+  /* Phone-wrap base has margin-top: -60px to pull phone up on desktop
+     (so its bottom aligns with hero copy). On mobile it just kills the
+     breathing room. Reset. */
+  .phone-wrap { margin-top: 0 !important; }
+  /* Hero__grid gap on mobile — extra row-gap between copy and phone. */
+  .hero__grid { row-gap: 24px; }
+
+  /* Phone screen content — shrink type + spacing so nothing clips or
+     wraps oddly inside the narrower mobile phone. Base sizes are tuned
+     for a 300px phone; at 260px everything needs ~10-15% smaller. */
+  .rq { font-size: 10px; letter-spacing: 0.14em; }
+  .rw { font-size: 28px; line-height: 1.1; }
+  .stamp--lg { font-size: 22px; padding: 6px 14px; border-width: 3px; }
+  .rstats { font-size: 9.5px; }
+  .breakdown__label { font-size: 9px; letter-spacing: 0.14em; }
+  .bar-row { padding: 6px 9px 7px; }
+  .bar-row .bl { font-size: 12px; }
+  .bar-row .bv { font-size: 9.5px; }
+  .final-line { font-size: 9px; }
+  .ab-primary { font-size: 12px; padding: 9px 14px; }
+  .ab-ghost { font-size: 11px; padding: 8px 12px; }
+}
+
+/* Why-Verdict globe scene: at ≤560, chips at left:84% push right up
+   against the stage edges. Bigger globe, chips pushed outward, and
+   shrunk so the diagonal chips don't overlap each other. */
+@media (max-width: 560px) {
+  .wv-chip {
+    left: 82%;
+    font-size: 10.5px;
+    padding: 4px 9px 4px 4px;
+    gap: 5px;
+    box-shadow: 0 3px 0 var(--ink);
+  }
+  .wv-chip__ico { width: 20px; height: 20px; font-size: 11px; border-radius: 6px; }
+  .wv-chip__dot { width: 6px; height: 6px; box-shadow: 0 0 0 2.5px rgba(255,77,46,0.2); }
+  .globe { width: 46%; height: 46%; }
+  .globe-scene__ring--inner { width: 58%; height: 58%; }
+  .globe-scene__ring--outer { width: 82%; height: 82%; }
+  .globe-scene__glow { inset: 12%; }
+}
+
+@media (max-width: 400px) {
+  .wv-chip {
+    left: 80%;
+    font-size: 9.5px;
+    padding: 3px 8px 3px 3px;
+    gap: 4px;
+  }
+  .wv-chip__ico { width: 18px; height: 18px; font-size: 10px; border-radius: 5px; }
+  .wv-chip__label { padding-right: 0; }
+  .wv-chip__dot { width: 5px; height: 5px; }
+  .globe { width: 50%; height: 50%; }
+
+  /* Hero waitlist button — shrink further at very narrow widths so it
+     doesn't dominate the column. Overrides .btn--lg from 560 breakpoint. */
+  .waitlist__input { padding: 12px 16px !important; font-size: 15px !important; }
+  .waitlist__btn.btn--lg {
+    font-size: 14px !important;
+    padding: 11px 16px !important;
+    border-radius: 12px !important;
+    border-width: 2px !important;
+    box-shadow: 0 3px 0 var(--ink) !important;
+  }
+
+  /* Marquee band — shrink type + gaps so items fit cleanly at 400px.
+     Base is 28px @ 32px gap; too heavy for narrow viewports. */
+  .marquee { padding: 12px 0; }
+  .marquee__item { font-size: 13px; gap: 8px; }
+  .marquee__em { font-size: 15px; }
+  .marquee__dot { font-size: 18px; margin-left: 4px; }
+  .marquee__track { gap: 22px; padding-left: 22px; }
+}
+
+/* ProSplit cluster: on mobile the absolute-positioned pcards
+   overlap and clip past the container. Stack them in flow instead.
+   Inline styles set top/left/right/bottom on .pc-slot — override
+   with !important so the mobile stack wins. */
+@media (max-width: 940px) {
+  .cluster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    min-height: 0;
+    padding: 8px 0 4px;
+  }
+  .pc-slot {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    animation: none;
+    width: auto;
+    max-width: 260px;
+  }
+  .pc-slot .pcard {
+    margin: 0 auto;
+  }
+}
+
+/* FinalCta store buttons — desktop keeps intrinsic width, centered.
+   Only on mobile the buttons stretch to share the row inline. */
+@media (max-width: 560px) {
+  .cta-final .store-row { flex-wrap: nowrap; }
+  .cta-final .store-btn { flex: 1 1 0; min-width: 0; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .cta-final .store-row { gap: 10px; }
+  .cta-final .store-btn {
+    padding: 10px 12px;
+    gap: 8px;
+    border-radius: 12px;
+  }
+  .cta-final .store-btn svg { width: 22px; height: 22px; }
+  .cta-final .store-btn .sb-top { font-size: 9px; letter-spacing: 0.06em; }
+  .cta-final .store-btn .sb-main { font-size: 14px; }
+}
+
+@media (max-width: 360px) {
+  .cta-final .store-row { gap: 8px; }
+  .cta-final .store-btn {
+    padding: 9px 10px;
+    gap: 6px;
+  }
+  .cta-final .store-btn svg { width: 20px; height: 20px; }
+  .cta-final .store-btn .sb-main { font-size: 13px; }
 }
