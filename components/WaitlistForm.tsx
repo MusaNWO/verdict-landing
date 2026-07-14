@@ -40,7 +40,7 @@ export default function WaitlistForm() {
           required
           autoComplete="email"
           inputMode="email"
-          placeholder="you@friends.com"
+          placeholder="your@email.com"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
@@ -68,8 +68,8 @@ export default function WaitlistForm() {
             : isDone
               ? state.alreadyJoined
                 ? "Already in ✓"
-                : "You're in ✓"
-              : "Join the waitlist"}
+                : "You’re in ✓"
+              : "Get launch updates"}
         </button>
       </div>
       <p

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Verdict — End the group-chat debate";
+export const alt = "Verdict - End the group-chat debate";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -97,7 +97,7 @@ export default async function OGImage() {
             display: "flex",
           }}
         >
-          One tap, one vote, one final answer — in about 30 seconds.
+          One tap, one vote, one final answer - in about 30 seconds.
         </div>
 
         <div

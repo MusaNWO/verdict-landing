@@ -1,4 +1,4 @@
-/* globals.css — Verdict marketing site. Brand: courtroom / game-night. */
+/* globals.css - Verdict marketing site. Brand: courtroom / game-night. */
 
 :root {
   --ink: #1C1820;
@@ -45,6 +45,10 @@ img { max-width: 100%; display: block; }
 }
 .section { padding: clamp(64px, 9vw, 132px) 0; position: relative; }
 
+/* Buttery scroll — takes the "video sequence" feel one step further by
+   easing the smooth-scroll snap between anchor jumps. */
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
 /* ── Buttons ─────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 9px;
@@ -84,26 +88,197 @@ img { max-width: 100%; display: block; }
 }
 .stamp--lg { font-size: 30px; border-width: 4px; padding: 8px 22px; }
 
-/* ── Nav ─────────────────────────────────────────── */
+/* ── Nav — Editorial full-width bar ──────────────── */
+/* Newspaper masthead vibe: full-width, cream on cream, big bold Verdict
+   wordmark, links in the center, single primary CTA on the right. No
+   floating card, no glass blur, no dashed dividers. Confidence over
+   decoration. */
 .nav {
-  position: sticky; top: 0; z-index: 50;
-  background: color-mix(in oklab, var(--cream) 86%, transparent);
-  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background-color: #FAF5EC !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: 1 !important;
+  isolation: isolate;
   border-bottom: 2px solid transparent;
-  transition: border-color .2s, background .2s;
+  transition: border-color .25s, box-shadow .25s;
 }
-.nav.scrolled { border-color: var(--ink); }
-.nav__in { display: flex; align-items: center; gap: 18px; height: 72px; }
-.brand { font-family: var(--display); font-weight: 800; font-size: 26px; letter-spacing: -0.03em; }
-.brand span { color: var(--primary); }
-.nav__links { display: flex; gap: 28px; margin-left: 28px; }
-.nav__links a { font-weight: 600; font-size: 15px; color: var(--muted); transition: color .15s; }
-.nav__links a:hover { color: var(--ink); }
-.nav__cta { margin-left: auto; display: flex; align-items: center; gap: 12px; }
-.nav__burger { display: none; }
+.nav.scrolled {
+  border-color: var(--ink);
+  box-shadow: 0 6px 22px -14px rgba(28,24,32,0.18);
+}
+.nav__row {
+  display: flex;
+  align-items: center;
+  height: 78px;
+  gap: 24px;
+}
+.nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.nav__brand-mark {
+  display: block;
+  width: 32px;
+  height: 32px;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.nav__brand:hover .nav__brand-mark { transform: rotate(-8deg) scale(1.05); }
+.nav__brand-word {
+  font-family: var(--display); font-weight: 800; font-size: 30px;
+  letter-spacing: -0.035em; line-height: 1;
+  display: inline-block;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.nav__brand:hover .nav__brand-word { transform: rotate(-3deg); }
+.nav__brand-dot {
+  color: var(--primary);
+  display: inline-block;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.nav__brand:hover .nav__brand-dot {
+  transform: translateY(3px) scale(1.5);
+}
+.nav__links {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  margin-left: auto;
+}
+.nav__links a {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  position: relative;
+  padding: 6px 0;
+  transition: color .18s;
+}
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+  transition: right .28s cubic-bezier(.2,.7,.3,1);
+}
+.nav__links a:hover { color: var(--primary); }
+.nav__links a:hover::after { right: 0; }
+
+.nav__primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--display); font-weight: 800; font-size: 15px;
+  color: #fff; background: var(--ink);
+  border: 2px solid var(--ink); border-radius: 999px;
+  padding: 12px 22px;
+  transition: transform .18s cubic-bezier(.34,1.56,.64,1), background .18s;
+  overflow: hidden;
+  position: relative;
+}
+.nav__primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--primary);
+  transform: translateY(101%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  z-index: 0;
+}
+.nav__primary > * { position: relative; z-index: 1; }
+.nav__primary:hover::before { transform: translateY(0); }
+.nav__primary-arrow {
+  display: inline-block;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.nav__primary:hover .nav__primary-arrow {
+  transform: translateX(4px);
+}
+.nav__burger {
+  display: none;
+  width: 40px; height: 40px;
+  padding: 0;
+  background: var(--paper);
+  border: 2px solid var(--ink); border-radius: 999px;
+  cursor: pointer;
+  align-items: center; justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0 3px 0 var(--ink);
+  margin-left: auto;
+}
+.nav__burger span {
+  display: block; width: 20px; height: 2.5px;
+  background: var(--ink); border-radius: 2px;
+  transition: transform .28s cubic-bezier(.2,.9,.3,1.2), opacity .18s;
+  transform-origin: center;
+}
+.nav__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__burger.is-open span:nth-child(2) { opacity: 0; }
+.nav__burger.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* Full-screen mobile drawer */
+.nav-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: color-mix(in oklab, var(--ink) 40%, transparent);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+.nav-drawer.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nav-drawer__panel {
+  position: absolute;
+  top: 78px; left: 12px; right: 12px;
+  background: var(--cream);
+  border: 2.5px solid var(--ink);
+  border-radius: 22px;
+  box-shadow: 0 12px 0 var(--ink);
+  padding: 22px 22px 26px;
+  display: flex; flex-direction: column; gap: 18px;
+  transform: translateY(-14px);
+  opacity: 0;
+  transition: transform .28s cubic-bezier(.2,.9,.3,1.2), opacity .22s;
+}
+.nav-drawer.is-open .nav-drawer__panel {
+  transform: translateY(0);
+  opacity: 1;
+}
+.nav-drawer__links {
+  display: flex; flex-direction: column;
+  border-top: 2px solid var(--line);
+  border-bottom: 2px solid var(--line);
+  margin: 0 -8px;
+}
+.nav-drawer__links a {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--ink);
+  padding: 14px 8px;
+  border-bottom: 1.5px solid var(--line);
+  transition: color .15s, background .15s;
+  border-radius: 8px;
+}
+.nav-drawer__links a:last-child { border-bottom: none; }
+.nav-drawer__links a:hover { color: var(--primary); background: rgba(255,77,46,0.04); }
+.nav-drawer__cta { display: flex; flex-direction: column; gap: 10px; }
+.nav-drawer__cta .btn { width: 100%; }
 
 /* ── Hero ────────────────────────────────────────── */
-.hero { padding: clamp(48px, 7vw, 92px) 0 clamp(64px, 8vw, 110px); overflow: hidden; }
+.hero { padding: clamp(48px, 7vw, 92px) 0 clamp(64px, 8vw, 110px); overflow: hidden; position: relative; }
 .hero__grid {
   display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center;
 }
@@ -114,30 +289,166 @@ img { max-width: 100%; display: block; }
   background: var(--yellow); z-index: -1; border-radius: 3px; transform: rotate(-1deg);
 }
 .hero__sub { font-size: clamp(17px, 1.5vw, 21px); color: var(--muted); font-weight: 500; line-height: 1.5; margin-top: 26px; max-width: 30em; }
-.hero__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
-.hero__cta-secondary { margin-top: 14px; }
+.hero__cta { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 34px; }
+.hero__stores { gap: 14px; flex-wrap: wrap; }
+.hero__cta-secondary { margin-top: 2px; }
+.hero__news { margin-top: 6px; width: 100%; max-width: 34em; }
+.hero__news > summary {
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--muted);
+  padding: 6px 0;
+  user-select: none;
+}
+.hero__news > summary::-webkit-details-marker { display: none; }
+.hero__news > summary::before {
+  content: "＋ ";
+  color: var(--primary);
+  font-weight: 800;
+}
+.hero__news[open] > summary::before { content: "− "; }
+.hero__news > summary:hover { color: var(--ink); }
+.hero__news .waitlist { margin-top: 10px; }
 .hero__link { font-family: var(--display); font-weight: 700; font-size: 14.5px; color: var(--ink); border-bottom: 2px solid var(--ink); padding-bottom: 1px; }
 .hero__link:hover { color: var(--primary); border-color: var(--primary); }
 .hero__meta { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 22px; font-size: 13.5px; font-weight: 600; color: var(--muted); }
 .hero__meta span { display: inline-flex; align-items: center; gap: 7px; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 
-.hero__art { position: relative; display: grid; place-items: center; min-height: 540px; }
-.float-chip {
-  position: absolute; background: var(--paper); border: 2.5px solid var(--ink);
-  border-radius: 14px; padding: 11px 16px; font-family: var(--display); font-weight: 700;
-  font-size: 16px; box-shadow: var(--shadow-sm); z-index: 3; white-space: nowrap;
-  display: inline-flex; align-items: center;
-  animation: bob 4s ease-in-out infinite;
+.hero__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 640px;
+  perspective: 1600px;
+  perspective-origin: 50% 40%;
 }
-.float-chip .em { margin-right: 7px; }
-@keyframes bob { 0%,100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-12px) rotate(var(--r,0deg)); } }
+/* Phone-sized scene: chips are positioned relative to THIS box (300px wide),
+   not the wider hero__art column — so pixel offsets like `left: -70px`
+   land the chip a predictable distance from the phone body. NOT
+   transform-style: preserve-3d here — that would flatten z-index ordering
+   with children, letting chips render in front of the phone screen. Flat
+   2D stacking + z-index gives us the "chip tucks behind phone" behavior. */
+.phone-scene {
+  position: relative;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+}
+.float-chip {
+  position: absolute;
+  /* z:1 keeps chips BEHIND the phone (phone body is z:2 via phone-wrap
+     below) — so when a chip's orbit path crosses the phone silhouette it
+     tucks behind instead of covering the screen content. */
+  z-index: 1;
+  background: var(--paper); border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-family: var(--display); font-weight: 700;
+  font-size: 12.5px; box-shadow: var(--shadow-sm); white-space: nowrap;
+  display: inline-flex; align-items: center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  /* Two-phase animation: chipEntry flies the chip from behind the phone
+     (translated by --in-x/--in-y toward the phone center, scaled 0)
+     out to its orbital position; then chipFloat3D takes over for the
+     gentle continuous orbit. `both` fill so entry state sticks before
+     the delay. */
+  animation:
+    chipEntry 0.9s cubic-bezier(.34,1.5,.64,1) var(--delay, 0s) both,
+    chipFloat3D 9s ease-in-out infinite calc(var(--delay, 0s) + 0.9s);
+  opacity: 0;
+}
+.float-chip .em { margin-right: 6px; font-size: 14px; }
+/* Fly-from-center entry — chip starts translated back toward the phone
+   center (undoes its outward offset), scaled small, opacity 0. Ends at its
+   natural position. Reads as "options orbit out from the phone". */
+@keyframes chipEntry {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--in-x, 0px), var(--in-y, 0px), -80px)
+               rotate(0deg) scale(0.4);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)) scale(1);
+  }
+}
+/* Playful hover: chip pops forward, rejoins orbit after. */
+.float-chip:hover {
+  animation: chipWiggle .5s cubic-bezier(.34,1.4,.64,1);
+  animation-fill-mode: both;
+  z-index: 3;
+}
+@keyframes chipWiggle {
+  0%   { transform: translate3d(0, 0, 20px) rotate(var(--r,0deg)) scale(1);         opacity: 1; }
+  30%  { transform: translate3d(0, -6px, 40px) rotate(calc(var(--r,0deg) - 6deg)) scale(1.08); opacity: 1; }
+  60%  { transform: translate3d(0, -2px, 30px) rotate(calc(var(--r,0deg) + 4deg)) scale(1.05); opacity: 1; }
+  100% { transform: translate3d(0, 0, 20px) rotate(var(--r,0deg)) scale(1.03);       opacity: 1; }
+}
+/* Transform + opacity only — box-shadow was repainting every frame and
+   causing the whole hero to jank. Static drop shadow reads fine. */
+@keyframes chipFloat3D {
+  0%   { transform: translate3d(0, 0, 0)    rotate(var(--r,0deg)) scale(1);    opacity: 1; }
+  25%  { transform: translate3d(0, -5px, 40px) rotate(var(--r,0deg)) scale(1.04); opacity: 1; }
+  50%  { transform: translate3d(0, -3px, 0)  rotate(var(--r,0deg)) scale(1);    opacity: 1; }
+  75%  { transform: translate3d(0, 3px, -60px) rotate(var(--r,0deg)) scale(0.92); opacity: 0.8; }
+  100% { transform: translate3d(0, 0, 0)    rotate(var(--r,0deg)) scale(1);    opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .float-chip { animation: none; }
+}
 
 /* ── Phone mockup ────────────────────────────────── */
+/* Wrapper picks up mouse events for the framer-motion tilt in Phone.tsx.
+   Own perspective so the phone tilts even if the outer perspective gets
+   flattened by an intermediate transform. */
+.phone-wrap {
+  position: relative;
+  width: 300px;
+  flex-shrink: 0;
+  transform-style: preserve-3d;
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+  /* Pull the phone up so its bottom lines up with the hero copy,
+     not the marquee band below. */
+  margin-top: -60px;
+  /* Above the chips so orbit paths tuck behind the phone body. */
+  z-index: 2;
+}
 .phone {
   position: relative; width: 300px; flex-shrink: 0;
   background: var(--ink); border-radius: 44px; padding: 11px;
-  box-shadow: 0 30px 60px -18px rgba(28,24,32,0.4), 0 0 0 2px var(--ink);
+  /* Layered shadow: tight rim + long soft cast for physical depth. */
+  box-shadow:
+    0 0 0 2px var(--ink),
+    0 22px 30px -18px rgba(28,24,32,0.35),
+    0 44px 70px -28px rgba(28,24,32,0.42),
+    0 6px 14px -6px rgba(28,24,32,0.3);
+  /* Rotation now driven by framer-motion (mouse-follow tilt in Phone.tsx).
+     transform-style keeps children (notch, screen, glare) in the same 3D
+     scene so they inherit the rotation cleanly. */
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.phone::before {
+  /* Subtle glare stripe across the bezel — sells the "glass" feel. */
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 42px;
+  background: linear-gradient(115deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 68%, rgba(255,255,255,0.06) 100%);
+  pointer-events: none;
+  z-index: 6;
+}
+@media (prefers-reduced-motion: reduce) {
+  .phone { transform: rotateY(-12deg) rotateX(5deg) !important; }
 }
 .phone__notch {
   position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
@@ -150,20 +461,88 @@ img { max-width: 100%; display: block; }
   background-image: radial-gradient(rgba(28,24,32,0.045) 1.1px, transparent 1.1px);
   background-size: 18px 18px;
 }
-.scr { flex: 1; display: flex; flex-direction: column; padding: 46px 20px 24px; }
+/* Top bar — mirrors VTopBar in the app (back button + "Verdict" label) */
+.scr-topbar {
+  position: absolute;
+  top: 50px; left: 0; right: 0;
+  padding: 6px 14px 10px;
+  display: flex; align-items: center; gap: 10px;
+  z-index: 4;
+}
+.scr-topbar__back {
+  width: 28px; height: 28px;
+  border: 2px solid var(--ink); border-radius: 9px;
+  background: var(--paper);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink);
+  box-shadow: 0 2px 0 var(--ink);
+  flex-shrink: 0;
+}
+.scr-topbar__back svg { width: 14px; height: 14px; }
+.scr-topbar__title {
+  font-family: var(--display); font-weight: 800; font-size: 14px;
+  color: var(--ink); letter-spacing: -0.01em;
+}
+
+.scr { flex: 1; display: flex; flex-direction: column; padding: 44px 16px 10px; min-height: 0; }
 .scr__top { font-family: var(--display); font-weight: 800; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 6px; }
 
-/* reveal screen */
-.scr--reveal { align-items: center; justify-content: center; text-align: center; gap: 4px; }
-.scr--reveal .rq { font-size: 14px; font-weight: 600; color: var(--muted); }
-.scr--reveal .rw { font-family: var(--display); font-weight: 800; font-size: 52px; line-height: 1; margin: 6px 0 12px; }
-.scr--reveal .rstats { font-size: 11.5px; font-weight: 700; color: var(--muted); margin-top: 18px; }
-.bars { width: 100%; display: flex; flex-direction: column; gap: 7px; margin-top: 16px; }
-.bar-row { display: flex; align-items: center; gap: 8px; }
-.bar-row .bl { font-size: 11px; font-weight: 700; width: 52px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bar-track { flex: 1; height: 11px; border-radius: 6px; background: var(--soft); overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 6px; background: var(--line); }
+/* Flex spacers that distribute the reveal content evenly instead of stacking
+   it at the top and leaving a dead zone above the action bar. */
+.scr-spacer { flex: 1 0 8px; min-height: 8px; }
+
+/* reveal screen - mirrors app/room/[code]/reveal.tsx */
+.scr--reveal { align-items: center; text-align: center; gap: 8px; }
+.scr--reveal .rq { font-family: var(--display); font-weight: 800; font-size: 9px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; }
+.scr--reveal .rw { font-family: var(--display); font-weight: 800; font-size: 42px; line-height: 1; letter-spacing: -0.02em; margin: 4px 0 2px; color: var(--ink); }
+.scr--reveal .stamp-wrap { margin: 6px 0 4px; }
+.scr--reveal .stamp--lg { font-size: 20px; padding: 5px 14px; border-width: 3px; }
+.scr--reveal .rstats { font-size: 10.5px; font-weight: 700; color: var(--muted); margin-top: 10px; }
+
+.breakdown { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+.breakdown__label { font-family: var(--display); font-weight: 800; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); text-align: left; }
+.bars { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+.bar-row {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 7px 10px 8px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.bar-row.win { border-color: var(--primary); border-width: 2px; }
+.bar-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.bar-row .bl { font-family: var(--body); font-weight: 700; font-size: 11px; color: var(--ink); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-row .bv { font-family: var(--display); font-weight: 800; font-size: 10.5px; color: var(--ink); flex-shrink: 0; }
+.bar-track { display: block; width: 100%; height: 9px; border-radius: 5px; background: rgba(28,24,32,0.08); overflow: hidden; border: 1px solid rgba(28,24,32,0.05); }
+.bar-fill { display: block; height: 100%; border-radius: 5px; background: var(--line); box-shadow: inset 0 -1px 0 rgba(0,0,0,0.06); }
 .bar-fill.win { background: var(--primary); }
+.bar-fill.c-blue { background: var(--blue); }
+.bar-fill.c-green { background: var(--green); }
+
+.final-line { font-size: 10px; font-weight: 600; color: var(--muted); text-align: center; }
+
+/* Bottom action bar - matches VButton stack in reveal.tsx */
+.action-bar {
+  border-top: 1.5px solid var(--line);
+  padding: 8px 14px 14px;
+  display: flex; flex-direction: column; gap: 5px;
+  background: var(--cream);
+}
+.ab-primary {
+  background: var(--primary); color: #fff;
+  border: 2px solid var(--ink); border-radius: 10px;
+  padding: 8px 10px; text-align: center;
+  font-family: var(--display); font-weight: 800; font-size: 11.5px;
+  box-shadow: 0 2px 0 var(--ink);
+}
+.ab-row { display: flex; gap: 5px; }
+.ab-ghost {
+  flex: 1; background: var(--paper); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 10px;
+  padding: 7px 8px; text-align: center;
+  font-family: var(--display); font-weight: 800; font-size: 11px;
+  box-shadow: 0 2px 0 var(--ink);
+}
 
 /* confetti dots in hero phone */
 .confetti i { position: absolute; width: 8px; height: 11px; border-radius: 2px; top: -20px; opacity: 0.9; }
@@ -223,7 +602,7 @@ img { max-width: 100%; display: block; }
 .statbar__in { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 20px; padding: 30px 24px; max-width: var(--maxw); margin: 0 auto; }
 .stat { text-align: center; }
 .stat b { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(30px, 4vw, 46px); line-height: 1; }
-.stat span { font-size: 13px; font-weight: 600; color: color-mix(in oklab, var(--cream) 65%, var(--ink)); letter-spacing: 0.04em; }
+.stat span { font-size: 13px; font-weight: 800; color: color-mix(in oklab, var(--cream) 88%, var(--ink)); letter-spacing: 0.06em; }
 .stat b .accent { color: var(--yellow); }
 
 /* ── Section heads ───────────────────────────────── */
@@ -232,23 +611,247 @@ img { max-width: 100%; display: block; }
 .sec-head h2 { font-size: clamp(32px, 4.4vw, 56px); margin-top: 14px; }
 .sec-head p { font-size: clamp(16px, 1.4vw, 19px); color: var(--muted); font-weight: 500; line-height: 1.55; margin-top: 18px; }
 
-/* ── Steps (how it works) ────────────────────────── */
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 58px; }
-.step {
-  background: var(--paper); border: 2.5px solid var(--ink); border-radius: 22px; padding: 28px 24px 26px;
-  box-shadow: var(--shadow); position: relative;
+/* ── Steps (how it works) — neon stage ─────────────── */
+/* One step at a time in the center, cycling every ~4.5s. Above + below
+   sit stacks of glowing horizontal "neon" bars in the brand orange,
+   drifting in 3D perspective. Corner film-marker brackets frame the
+   whole thing so it feels like a proper editorial spotlight stage. */
+.stage {
+  position: relative;
+  margin: 52px auto 0;
+  max-width: 860px;
+  min-height: 360px;
+  padding: 60px 20px;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(255,77,46,0.06) 0%, transparent 60%),
+    linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);
+  border: 2.5px solid var(--ink);
+  box-shadow:
+    0 12px 0 var(--ink),
+    0 30px 60px -20px rgba(28,24,32,0.28),
+    inset 0 0 80px rgba(255,77,46,0.04);
+  overflow: hidden;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
 }
-.step__n {
-  position: absolute; top: -20px; left: 24px;
-  width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: #fff;
-  border: 2.5px solid var(--ink); display: grid; place-items: center;
-  font-family: var(--display); font-weight: 800; font-size: 20px; box-shadow: var(--shadow-sm);
+/* Corner brackets — the "film cut" markers at each corner. */
+.stage-corner {
+  position: absolute;
+  width: 26px; height: 26px;
+  border: 3px solid var(--primary);
+  z-index: 4;
+  filter: drop-shadow(0 0 6px rgba(255,77,46,0.4));
 }
-.step h3 { font-size: 23px; margin: 22px 0 10px; }
-.step p { color: var(--muted); font-weight: 500; line-height: 1.5; font-size: 15.5px; }
-.step .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
-.mini-chip { font-size: 12.5px; font-weight: 700; background: var(--soft); border: 2px solid var(--line); border-radius: 999px; padding: 5px 11px; white-space: nowrap; }
+.stage-corner--tl { top: 16px; left: 16px; border-right: 0; border-bottom: 0; border-radius: 4px 0 0 0; }
+.stage-corner--tr { top: 16px; right: 16px; border-left: 0; border-bottom: 0; border-radius: 0 4px 0 0; }
+.stage-corner--bl { bottom: 16px; left: 16px; border-right: 0; border-top: 0; border-radius: 0 0 0 4px; }
+.stage-corner--br { bottom: 16px; right: 16px; border-left: 0; border-top: 0; border-radius: 0 0 4px 0; }
+
+/* Spotlight ambient glow behind the center step — orange radial that
+   subtly pulses, gives the "stage light shining down" cinematic feel. */
+.stage__spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(255,77,46,0.18) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 1;
+  animation: spotlightPulse 5s ease-in-out infinite;
+}
+@keyframes spotlightPulse {
+  0%, 100% { opacity: 0.75; }
+  50%      { opacity: 1;    }
+}
+
+.stage__lines {
+  position: absolute;
+  left: 0; right: 0;
+  height: 110px;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+.stage__lines--top    { top: 0;     transform: rotateX(28deg);  transform-origin: 50% 100%; }
+.stage__lines--bottom { bottom: 34px; transform: rotateX(-28deg); transform-origin: 50% 0%; }
+
+/* Neon bar: orange gradient core + triple glow shadow. A traveling white
+   shimmer sweeps across via ::after — "electric current" flowing through
+   the bar. Per-line --sweep-dur controls each bar's shimmer pace. */
+.neon-line {
+  position: absolute;
+  height: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,77,46,0.35) 6%,
+    var(--primary) 20%,
+    #FF7A3E 50%,
+    var(--primary) 80%,
+    rgba(255,77,46,0.35) 94%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 10px rgba(255,77,46,0.7),
+    0 0 22px rgba(255,77,46,0.45),
+    0 0 40px rgba(255,77,46,0.25);
+  animation: neonDrift 5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.neon-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.6) 44%,
+    rgba(255,255,255,0.95) 50%,
+    rgba(255,255,255,0.6) 56%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: neonSweep var(--sweep-dur, 4s) linear infinite;
+  animation-delay: inherit;
+}
+@keyframes neonDrift {
+  0%, 100% { translate: 0 0;   filter: brightness(1); }
+  50%      { translate: 0 -6px; filter: brightness(1.25); }
+}
+@keyframes neonSweep {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(220%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .neon-line, .neon-line::after, .stage__spotlight { animation: none; }
+}
+
+/* Progress pips — active one carries a countdown fill that drains over
+   CYCLE_MS, so the auto-cycle feels intentional (not just random). */
+.stage__pips {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 5;
+}
+.stage-pip {
+  position: relative;
+  width: 30px; height: 6px;
+  border-radius: 3px;
+  background: rgba(28,24,32,0.16);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  transition: background .3s ease, width .3s cubic-bezier(.2,.7,.3,1.1);
+}
+.stage-pip:hover { background: rgba(28,24,32,0.32); }
+.stage-pip.is-active {
+  background: rgba(255,77,46,0.2);
+  width: 52px;
+  box-shadow: 0 0 12px rgba(255,77,46,0.4);
+}
+.stage-pip__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--primary), #FF7A3E);
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: pipCountdown linear forwards;
+}
+@keyframes pipCountdown {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Center step — one at a time, animated in/out by framer-motion. */
+.stage__center {
+  position: relative;
+  z-index: 3;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage-step {
+  text-align: center;
+  max-width: 580px;
+  padding: 0 20px;
+}
+/* Chunky number badge with subtle idle float — top-highlight gradient
+   gives it a "glossy 3D plastic key" look, high-craft finish. */
+.stage-step__n {
+  position: relative;
+  width: 62px; height: 62px;
+  margin: 0 auto 16px;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.22) 0%, transparent 40%, rgba(0,0,0,0.15) 100%),
+    var(--primary);
+  color: #fff;
+  border: 2.5px solid var(--ink);
+  display: grid; place-items: center;
+  font-family: var(--display); font-weight: 800; font-size: 26px;
+  box-shadow:
+    0 5px 0 var(--ink),
+    0 14px 26px -8px rgba(255,77,46,0.55);
+  animation: badgeFloat 4s ease-in-out infinite;
+}
+.stage-step__n > span {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+@keyframes badgeFloat {
+  0%, 100% { transform: translateY(0)   rotate(-2deg); }
+  50%      { transform: translateY(-4px) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage-step__n { animation: none; }
+}
+
+.stage-step__title {
+  font-size: clamp(22px, 2.6vw, 32px);
+  margin: 0 0 10px;
+  letter-spacing: -0.015em;
+}
+.stage-step__desc {
+  color: var(--muted);
+  font-weight: 500;
+  line-height: 1.5;
+  font-size: clamp(13.5px, 1.1vw, 15.5px);
+  max-width: 42ch;
+  margin: 0 auto;
+}
+.stage-step__chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.mini-chip {
+  font-size: 13px; font-weight: 700;
+  background: var(--soft); border: 2px solid var(--line);
+  border-radius: 999px; padding: 6px 13px;
+  white-space: nowrap;
+  transition: transform .2s ease, background .2s ease;
+}
 .mini-chip.on { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.mini-chip:hover { transform: translateY(-2px) rotate(-2deg); }
+
+.mini-chip {
+  font-size: 12.5px; font-weight: 700;
+  background: var(--soft); border: 2px solid var(--line);
+  border-radius: 999px; padding: 5px 11px;
+  white-space: nowrap;
+  transition: transform .2s ease, background .2s ease;
+}
+.mini-chip.on { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.mini-chip:hover { transform: translateY(-2px) rotate(-2deg); }
 
 /* ── Mechanics ───────────────────────────────────── */
 .mech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 54px; }
@@ -286,16 +889,610 @@ img { max-width: 100%; display: block; }
 .rank-badge.on { background: var(--primary); color: #fff; }
 .ring { width: 40px; height: 40px; }
 
-/* ── Teams ───────────────────────────────────────── */
-.teams { background: var(--ink); color: var(--cream); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
-.teams .eyebrow { color: var(--yellow); }
+/* ── Teams (dark section, orange + cream palette) ─── */
+.teams {
+  background: var(--ink);
+  color: var(--cream);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+.teams .eyebrow { color: var(--primary); }
 .teams .sec-head p { color: color-mix(in oklab, var(--cream) 72%, var(--ink)); }
-.teams .stamp { color: var(--yellow); }
+.teams .stamp { color: var(--primary); }
+.teams .wrap { position: relative; z-index: 1; }
+
+/* Soft orange radial anchored behind the heading — brand presence on the
+   dark canvas without competing with the copy. */
+.teams__glow {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  width: 70vw;
+  height: 60vh;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(255,77,46,0.16), transparent 70%);
+  pointer-events: none;
+  filter: blur(12px);
+  z-index: 0;
+}
+
 .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 52px; }
-.tcard { background: color-mix(in oklab, var(--cream) 7%, var(--ink)); border: 2px solid color-mix(in oklab, var(--cream) 20%, var(--ink)); border-radius: 18px; padding: 24px 20px; }
-.tcard .tc-ico { font-size: 26px; }
-.tcard h4 { font-size: 18px; margin: 14px 0 8px; }
+.tcard {
+  background: color-mix(in oklab, var(--cream) 7%, var(--ink));
+  border: 2px solid color-mix(in oklab, var(--cream) 20%, var(--ink));
+  border-radius: 18px;
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color .35s ease, box-shadow .35s ease, background .35s ease;
+}
+.tcard:hover {
+  transform: none;
+  border-color: rgba(255,77,46,0.55);
+  background: color-mix(in oklab, var(--cream) 10%, var(--ink));
+  box-shadow:
+    0 0 0 1px rgba(255,77,46,0.28),
+    0 22px 40px -20px rgba(255,77,46,0.35);
+}
+.tcard h4 { font-size: 18px; margin: 16px 0 8px; }
 .tcard p { font-size: 14px; line-height: 1.5; color: color-mix(in oklab, var(--cream) 62%, var(--ink)); font-weight: 500; }
+
+/* Icon tile — orange square, white glyph, subtle inner border + drop */
+.tcard .tc-ico {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  border: 2px solid rgba(255,255,255,0.14);
+  box-shadow: 0 8px 20px -8px rgba(255,77,46,0.55);
+  transition: transform .35s cubic-bezier(.34,1.4,.64,1);
+}
+.tcard:hover .tc-ico { transform: rotate(-6deg) scale(1.06); }
+
+/* Header row: icon on the left, oversized numeral on the right */
+.tcard__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.tcard__num {
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  transition: color .3s ease, transform .3s ease;
+}
+.tcard:hover .tcard__num {
+  color: rgba(255,77,46,0.75);
+  transform: translateY(-2px);
+}
+
+/* Film-marker corners — orange, hidden idle, snap outward on hover */
+.tcard__corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--primary);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s ease, transform .4s cubic-bezier(.34,1.4,.64,1);
+}
+.tcard:hover .tcard__corner { opacity: 0.9; }
+.tcard__corner--tl { top: 10px; left: 10px; border-right: 0; border-bottom: 0; border-top-left-radius: 4px; }
+.tcard__corner--tr { top: 10px; right: 10px; border-left: 0; border-bottom: 0; border-top-right-radius: 4px; }
+.tcard__corner--bl { bottom: 10px; left: 10px; border-right: 0; border-top: 0; border-bottom-left-radius: 4px; }
+.tcard__corner--br { bottom: 10px; right: 10px; border-left: 0; border-top: 0; border-bottom-right-radius: 4px; }
+.tcard:hover .tcard__corner--tl { transform: translate(-3px, -3px); }
+.tcard:hover .tcard__corner--tr { transform: translate(3px, -3px); }
+.tcard:hover .tcard__corner--bl { transform: translate(-3px, 3px); }
+.tcard:hover .tcard__corner--br { transform: translate(3px, 3px); }
+
+/* CTA — orange on dark, arrow slides on hover */
+.teams__cta {
+  background: var(--primary);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.teams__cta:hover {
+  box-shadow: 0 10px 0 rgba(255,77,46,0.28), 0 20px 40px -14px rgba(255,77,46,0.55);
+}
+.teams__cta-arrow {
+  display: inline-block;
+  transition: transform .3s cubic-bezier(.34,1.4,.64,1);
+}
+.teams__cta:hover .teams__cta-arrow { transform: translateX(5px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tcard__corner { display: none; }
+}
+
+/* ── Pricing polish ───────────────────────────────────
+   Framer-motion drives entry + hover lift on .tier now, so the legacy CSS
+   hover transform is neutralized. Price value sits inside an inline-block
+   wrapper so AnimatePresence can crossfade the old/new number without
+   reflowing the card. */
+.tier { position: relative; transition: box-shadow .35s ease, border-color .35s ease; }
+.tier:hover { transform: none; }
+.tier:not(.pop):hover { box-shadow: 0 14px 0 var(--ink), 0 22px 40px -20px rgba(28,24,32,0.25); }
+.tier.pop:hover {
+  box-shadow: 0 14px 0 var(--primary), 0 22px 40px -20px rgba(255,77,46,0.5);
+}
+.tier.pop { transform: none; }
+
+.tier__price {
+  position: relative;
+  min-height: 46px;
+}
+.tier__price-inner {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Save badge — gentle pulse to draw the eye to the yearly toggle */
+.price-toggle__save {
+  animation: savePulse 2.4s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+@keyframes savePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255,77,46,0);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 6px rgba(255,77,46,0.14);
+  }
+}
+
+/* Tick tile — subtle scale-up on tier hover so the whole feature list feels
+   responsive without individual per-row animations. */
+.tier__feats .tick {
+  transition: transform .3s cubic-bezier(.34,1.4,.64,1), box-shadow .3s ease;
+}
+.tier:hover .tier__feats .tick {
+  box-shadow: 0 4px 10px -4px rgba(255,77,46,0.4);
+}
+
+/* Pop tier gets a soft ambient glow at rest so it always reads as the hero
+   pick, even before hover. */
+.tier.pop::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  z-index: -1;
+  border-radius: 32px;
+  background: radial-gradient(closest-side, rgba(255,77,46,0.12), transparent 70%);
+  pointer-events: none;
+}
+
+/* Toggle option gets a soft rise as it becomes active */
+.price-toggle__opt.is-on {
+  box-shadow: 0 4px 12px -4px rgba(28,24,32,0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .price-toggle__save { animation: none; }
+}
+
+/* ── Why Verdict globe scene ─────────────────────────
+   Square stage centered under the header. Everything absolute-positions
+   from the stage's center so the globe + orbit rings + chips scale together
+   as one composed illustration. */
+.globe-scene {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  aspect-ratio: 1;
+  margin: 32px auto 0;
+  display: grid;
+  place-items: center;
+}
+
+/* Soft orange atmosphere behind the globe */
+.globe-scene__glow {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,77,46,0.3), transparent 70%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Two dashed orbit rings, spinning in opposite directions */
+.globe-scene__ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px dashed rgba(28,24,32,0.16);
+  pointer-events: none;
+  z-index: 1;
+  animation: globeRingSpin 60s linear infinite;
+}
+.globe-scene__ring--inner { width: 46%; height: 46%; }
+.globe-scene__ring--outer {
+  width: 78%;
+  height: 78%;
+  animation-direction: reverse;
+  animation-duration: 90s;
+  border-color: rgba(28,24,32,0.1);
+}
+@keyframes globeRingSpin { to { transform: rotate(360deg); } }
+
+/* Signal pulses — expand + fade outward on a stagger */
+.globe-scene__pulse {
+  position: absolute;
+  width: 32%;
+  height: 32%;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  opacity: 0;
+  z-index: 1;
+  animation: globePulse 3.6s ease-out infinite;
+  will-change: transform, opacity;
+}
+.globe-scene__pulse--2 { animation-delay: 1.8s; }
+@keyframes globePulse {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* The globe itself sits center — 32% of stage width */
+.globe {
+  position: relative;
+  width: 32%;
+  height: 32%;
+  z-index: 2;
+  filter: drop-shadow(0 20px 30px rgba(255,77,46,0.35));
+}
+/* Atmospheric halo — breathing ring around the sphere sells the "planet
+   with atmosphere" idea and gives the globe visual weight. */
+.globe::before {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side,
+      transparent 55%,
+      rgba(255,138,82,0.45) 63%,
+      rgba(255,77,46,0.25) 72%,
+      transparent 85%);
+  filter: blur(6px);
+  pointer-events: none;
+  animation: haloBreath 4.5s ease-in-out infinite;
+  z-index: -1;
+}
+@keyframes haloBreath {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.06); }
+}
+.globe__wire {
+  transform-origin: 100px 100px;
+  animation: globeWireSpin 30s linear infinite;
+}
+@keyframes globeWireSpin { to { transform: rotate(360deg); } }
+
+/* Orbiting feature chips — two-element pattern.
+   .wv-orbit fills the stage and rotates by --angle around the stage center.
+   The chip inside sits at a fixed % from the orbit's right edge (that %
+   IS the orbit radius, measured against the parent), then counter-rotates
+   so its text stays upright regardless of angle. */
+.wv-orbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  rotate: var(--angle);
+}
+/* Connection line — a fading gradient tether from globe edge to chip.
+   Sits inside the rotated orbit so it always points at its chip. */
+.wv-orbit::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 18%;
+  width: 66%;
+  height: 1.5px;
+  background: linear-gradient(90deg,
+    rgba(255,77,46,0) 0%,
+    rgba(255,77,46,0.18) 18%,
+    rgba(255,77,46,0.4) 50%,
+    rgba(255,77,46,0.18) 82%,
+    rgba(255,77,46,0) 100%);
+  transform: translateY(-50%);
+  opacity: 0.75;
+  transition: opacity .35s ease, height .35s ease, background .35s ease;
+}
+/* Traveling signal dot — pulses from globe outward to chip on a stagger.
+   Selling the "verdict data broadcasting to every feature" idea. */
+.wv-orbit::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FF7A3E;
+  box-shadow: 0 0 10px rgba(255,77,46,0.9), 0 0 3px rgba(255,255,255,0.9);
+  transform: translateY(-50%);
+  opacity: 0;
+  animation: wvSignal 3.6s cubic-bezier(.32,.7,.4,1) infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes wvSignal {
+  0%   { left: 20%; opacity: 0; }
+  12%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { left: 82%; opacity: 0; }
+}
+/* Brighten the line when the chip inside is hovered */
+.wv-orbit:has(.wv-chip:hover)::before {
+  opacity: 1;
+  height: 2px;
+  background: linear-gradient(90deg,
+    rgba(255,77,46,0) 0%,
+    rgba(255,77,46,0.6) 30%,
+    rgba(255,77,46,0.9) 70%,
+    rgba(255,77,46,0.4) 100%);
+}
+.wv-orbit:has(.wv-chip:hover)::after {
+  animation-duration: 1.6s;
+}
+
+.wv-chip {
+  position: absolute;
+  top: 50%;
+  left: 86%;
+  translate: -50% -50%;
+  rotate: calc(-1 * var(--angle));
+  transform-origin: center center;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 14px 5px 5px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF7F0 100%);
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow:
+    0 4px 0 var(--ink),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  font-family: var(--display);
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  white-space: nowrap;
+  transition: box-shadow .3s, border-color .3s;
+  cursor: default;
+  animation: wvChipBob 4.5s ease-in-out infinite;
+  animation-delay: var(--bob-delay, 0s);
+  will-change: translate;
+}
+/* Idle vertical bob — chips gently drift so the whole scene feels alive
+   instead of stamped in place. Uses individual `translate` so it composes
+   with framer-motion's hover `scale` (which lives on `transform`). */
+@keyframes wvChipBob {
+  0%, 100% { translate: -50% -50%; }
+  50%      { translate: -50% -56%; }
+}
+.wv-chip::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(255,77,46,0.35), transparent 70%);
+  opacity: 0;
+  transition: opacity .3s ease;
+  z-index: -1;
+  filter: blur(6px);
+}
+.wv-chip:hover {
+  border-color: var(--primary);
+  box-shadow: 0 6px 0 var(--primary), 0 14px 24px -8px rgba(255,77,46,0.55);
+}
+.wv-chip:hover::before { opacity: 1; }
+
+/* Icon tile — orange gradient rounded square with a hard ink border and
+   drop shadow, matching the Mechanics/Teams icon language. */
+.wv-chip__ico {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary) 0%, #FF8A52 100%);
+  border: 2px solid var(--ink);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  line-height: 1;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 0 var(--ink), inset 0 1px 0 rgba(255,255,255,0.35);
+  transition: transform .35s cubic-bezier(.34,1.4,.64,1);
+}
+.wv-chip:hover .wv-chip__ico { transform: rotate(-6deg) scale(1.08); }
+
+.wv-chip__label { padding-right: 2px; }
+
+/* Live pulse dot at the tail — subtle "signal is on" cue matching the
+   traveling-dot animation on the connection line. */
+.wv-chip__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(255,77,46,0.2);
+  animation: wvChipDot 2.2s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes wvChipDot {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 0 3px rgba(255,77,46,0.2); }
+  50%      { transform: scale(1.25); box-shadow: 0 0 0 7px rgba(255,77,46,0.04); }
+}
+
+@media (max-width: 720px) {
+  .globe-scene { max-width: 100%; }
+  .globe { width: 38%; height: 38%; }
+  .wv-chip {
+    left: 84%;
+    font-size: 11px;
+    padding: 6px 10px;
+    gap: 5px;
+    box-shadow: 0 3px 0 var(--ink);
+  }
+  .wv-chip__ico { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-scene__ring, .globe__wire, .globe-scene__pulse,
+  .globe::before, .wv-orbit::after, .wv-chip, .wv-chip__dot { animation: none; }
+}
+
+/* ── Quotes: cinematic spotlight cycler ───────────────
+   One card is `.is-featured` at a time; the others dim + shrink slightly.
+   Auto-cycles on a timer (paused on hover), user can click pips or hover
+   any card to take control. Legacy CSS hover transform neutralized. */
+.quotes-sec .quote {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform .5s cubic-bezier(.32,1.2,.4,1),
+    opacity .4s ease,
+    border-color .4s ease,
+    box-shadow .4s ease,
+    background .4s ease;
+}
+.quotes-sec .quote:hover { transform: none; }
+.quotes-sec .quote:not(.is-featured) {
+  opacity: 0.6;
+  transform: scale(0.97);
+  filter: saturate(0.85);
+}
+.quotes-sec .quote.is-featured {
+  border-color: var(--primary);
+  background: linear-gradient(180deg, #FFF7F0 0%, var(--paper) 100%);
+  box-shadow:
+    0 12px 0 var(--primary),
+    0 22px 40px -14px rgba(255,77,46,0.4);
+  transform: scale(1.03);
+  z-index: 2;
+}
+
+/* Giant faded quote mark anchored top-right — sells the "editorial pull
+   quote" feel without stealing focus from the text. */
+.q-mark {
+  position: absolute;
+  top: -30px;
+  right: 12px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 130px;
+  line-height: 1;
+  color: rgba(255,77,46,0.14);
+  font-weight: 700;
+  pointer-events: none;
+  transition: color .4s ease, transform .5s ease;
+  z-index: 0;
+}
+.quote.is-featured .q-mark {
+  color: rgba(255,77,46,0.24);
+  transform: scale(1.06);
+}
+
+/* Star row — 5 orange stars, staggered pop-in on scroll into view */
+.q-stars {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 14px;
+  color: var(--primary);
+  position: relative;
+  z-index: 1;
+}
+.q-star { display: inline-flex; }
+.q-star svg { width: 14px; height: 14px; }
+
+/* Shimmer sweep across the featured card — the "video is playing" beat */
+.q-shine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 55%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,0.75) 50%,
+    transparent 100%);
+  transform: skewX(-16deg);
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: overlay;
+}
+
+/* Ensure content sits above the quote-mark decoration */
+.quotes-sec .quote p,
+.quotes-sec .quote .qby { position: relative; z-index: 1; }
+
+/* Pip navigation with countdown fill on the active pip */
+.quote-pips {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+.quote-pip {
+  width: 34px;
+  height: 6px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(28,24,32,0.16);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s ease, width .3s ease;
+}
+.quote-pip:hover { background: rgba(28,24,32,0.25); }
+.quote-pip.is-active {
+  background: rgba(255,77,46,0.2);
+  width: 60px;
+}
+.quote-pip__fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--primary);
+  transform-origin: left center;
+  animation: quotePipFill linear forwards;
+}
+@keyframes quotePipFill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .q-shine, .quote-pip__fill { animation: none; display: none; }
+  .quotes-sec .quote:not(.is-featured) {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .quotes-sec .quote.is-featured { transform: none; }
+}
 
 /* ── Pricing ─────────────────────────────────────── */
 .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 56px; align-items: stretch; }
@@ -316,6 +1513,59 @@ img { max-width: 100%; display: block; }
 .tier__feats .tick svg { width: 11px; height: 9px; }
 .tier .btn { margin-top: auto; width: 100%; }
 
+/* Price period toggle */
+.price-toggle {
+  display: inline-flex;
+  gap: 0;
+  margin-top: 28px;
+  padding: 5px;
+  background: var(--paper);
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+}
+.price-toggle__opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.price-toggle__opt.is-on {
+  background: var(--ink);
+  color: var(--cream);
+}
+.price-toggle__save {
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--primary);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+.price-toggle__opt.is-on .price-toggle__save {
+  background: var(--cream);
+  color: var(--ink);
+}
+.price-note {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
 /* ── Quotes ──────────────────────────────────────── */
 .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 54px; }
 .quote { background: var(--paper); border: 2.5px solid var(--ink); border-radius: 20px; padding: 26px 24px; box-shadow: var(--shadow); }
@@ -325,10 +1575,123 @@ img { max-width: 100%; display: block; }
 .quote .qby span { font-size: 12.5px; color: var(--muted); font-weight: 600; }
 
 /* ── Final CTA ───────────────────────────────────── */
-.cta-final { text-align: center; }
+.cta-final { text-align: center; position: relative; overflow: hidden; }
 .cta-final .stamp { margin-bottom: 24px; }
 .cta-final h2 { font-size: clamp(40px, 6vw, 78px); }
 .cta-final .store-row { justify-content: center; margin-top: 34px; }
+
+/* Ambient atmospheric glow behind the stamp — anchored above the copy so
+   it halos the stamp specifically without lifting the whole background. */
+.cta-final__glow {
+  position: absolute;
+  top: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
+  max-width: 780px;
+  height: 60vh;
+  background: radial-gradient(closest-side,
+    rgba(255,77,46,0.22) 0%,
+    rgba(255,77,46,0.08) 45%,
+    transparent 75%);
+  filter: blur(24px);
+  pointer-events: none;
+  z-index: 0;
+}
+.cta-final .wrap { position: relative; z-index: 1; }
+
+/* Stamp animation stage — the wrap gives the ripple pseudos a positioned
+   parent so they emanate from the stamp's own bounding box. */
+.cta-stamp-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+.cta-final .cta-stamp-wrap .stamp { margin-bottom: 0; }
+.cta-stamp {
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+/* Impact ripple — orange outline ring that expands + fades from the stamp
+   on landing. Two rings on stagger for that "ink splat" beat. */
+.cta-stamp__ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  border: 3px solid var(--primary);
+  translate: -50% -50%;
+  pointer-events: none;
+  transform-origin: center;
+}
+
+/* Trust meta chips — three short facts under the lede */
+.cta-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 22px auto 0;
+  max-width: 640px;
+}
+.cta-meta__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 14px 5px 5px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF7F0 100%);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--ink);
+  box-shadow:
+    0 3px 0 var(--ink),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  transition: transform .3s cubic-bezier(.34,1.4,.64,1), box-shadow .3s ease, border-color .3s ease;
+}
+.cta-meta__item:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: 0 5px 0 var(--primary), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+/* Icon tile matches the globe-scene chips — same visual language */
+.cta-meta__ico {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary) 0%, #FF8A52 100%);
+  border: 2px solid var(--ink);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 0 var(--ink), inset 0 1px 0 rgba(255,255,255,0.35);
+}
+.cta-meta__ico svg { width: 13px; height: 13px; display: block; }
+
+.cta-final__lede {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 19px;
+  margin: 18px auto 0;
+  max-width: 30em;
+  line-height: 1.5;
+}
+.cta-final__foot {
+  font-size: 13.5px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 22px;
+}
+
+@media (max-width: 560px) {
+  .cta-meta { gap: 8px; }
+  .cta-meta__item { font-size: 12px; padding: 6px 11px; }
+}
 
 /* ── Legal pages ─────────────────────────────────── */
 .legal { padding: clamp(48px, 7vw, 88px) 0 clamp(64px, 8vw, 110px); }
@@ -365,15 +1728,159 @@ img { max-width: 100%; display: block; }
 .legal__back { margin-top: 56px; font-family: var(--display); font-weight: 700; font-size: 16px; }
 
 /* ── Footer ──────────────────────────────────────── */
-.footer { border-top: 2px solid var(--ink); padding: 52px 0 40px; }
-.footer__in { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
-.footer__brand { max-width: 280px; }
-.footer__brand p { color: var(--muted); font-weight: 500; font-size: 14px; margin-top: 12px; line-height: 1.5; }
+/* ── Footer: pure black canvas, orange glow from the logo ─────
+   Deep black background so the orange gradient reads richer than it did on
+   the muted ink. The orange radial is anchored on the logo (top-left), so
+   the brand acts as the light source lighting the rest of the columns.
+   A thin orange top rule welds the footer to the page above. */
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: #0A0810;
+  color: var(--cream);
+  padding: 68px 0 44px;
+  border-top: 2px solid #0A0810;
+}
+.footer::before {
+  content: "";
+  position: absolute;
+  top: -8%;
+  left: -6%;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(closest-side,
+    rgba(255,77,46,0.38) 0%,
+    rgba(255,77,46,0.18) 35%,
+    rgba(255,77,46,0.05) 65%,
+    transparent 85%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 0;
+}
+.footer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,77,46,0.6) 20%,
+    var(--primary) 50%,
+    rgba(255,77,46,0.6) 80%,
+    transparent 100%);
+  pointer-events: none;
+}
+.footer .wrap { position: relative; z-index: 1; }
+
+.footer__in {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  justify-content: space-between;
+}
+.footer__brand { max-width: 340px; }
+/* Wordmark reused from the nav — override color to cream on the dark footer */
+.footer__brand-mark { color: var(--cream); }
+.footer__brand p {
+  color: color-mix(in oklab, var(--cream) 68%, var(--ink));
+  font-weight: 500;
+  font-size: 14.5px;
+  margin-top: 14px;
+  line-height: 1.55;
+}
+
+/* Social buttons — dark tiles with a subtle light border. Hover fills
+   orange + slight rotation for a bit of life. */
+.footer__social { display: flex; gap: 10px; margin-top: 20px; }
+.footer__social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid color-mix(in oklab, var(--cream) 22%, var(--ink));
+  border-radius: 11px;
+  background: color-mix(in oklab, var(--cream) 6%, var(--ink));
+  color: var(--cream);
+  box-shadow: none;
+  transition:
+    transform .3s cubic-bezier(.34,1.4,.64,1),
+    background .3s ease,
+    color .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease;
+}
+.footer__social-btn:hover {
+  transform: translateY(-3px) rotate(-6deg);
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 8px 18px -4px rgba(255,77,46,0.55);
+}
+.footer__social-btn svg { width: 18px; height: 18px; }
+
 .footer__cols { display: flex; gap: 56px; flex-wrap: wrap; }
-.fcol h5 { font-family: var(--display); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
-.fcol a { display: block; font-weight: 600; font-size: 14.5px; margin-bottom: 10px; color: var(--ink); opacity: 0.85; }
-.fcol a:hover { color: var(--primary); opacity: 1; }
-.footer__base { border-top: 2px solid var(--line); margin-top: 40px; padding-top: 22px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--muted); font-weight: 500; }
+.fcol h5 {
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 18px;
+}
+/* Link rows — arrow slides in on hover to signal navigability */
+.fcol__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14.5px;
+  margin-bottom: 12px;
+  color: color-mix(in oklab, var(--cream) 82%, var(--ink));
+  transition: color .25s ease, transform .3s cubic-bezier(.34,1.4,.64,1);
+}
+.fcol__link:last-child { margin-bottom: 0; }
+.fcol__link:hover {
+  color: var(--cream);
+  transform: translateX(3px);
+}
+.fcol__arrow {
+  display: inline-block;
+  color: var(--primary);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .25s ease, transform .3s cubic-bezier(.34,1.4,.64,1);
+  font-weight: 800;
+}
+.fcol__link:hover .fcol__arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.footer__base {
+  border-top: 2px solid color-mix(in oklab, var(--cream) 12%, var(--ink));
+  margin-top: 44px;
+  padding-top: 22px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 13px;
+  color: color-mix(in oklab, var(--cream) 60%, var(--ink));
+  font-weight: 500;
+}
+.footer__base-dot {
+  color: color-mix(in oklab, var(--cream) 30%, var(--ink));
+}
+.footer__base-mail {
+  color: var(--cream);
+  font-weight: 700;
+  transition: color .25s ease;
+}
+.footer__base-mail:hover { color: var(--primary); }
+.footer__base-flex { flex: 1; min-width: 20px; }
 
 /* ── Scroll reveal ───────────────────────────────── */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1); }
@@ -381,18 +1888,980 @@ img { max-width: 100%; display: block; }
 .reveal.d1 { transition-delay: .08s; } .reveal.d2 { transition-delay: .16s; } .reveal.d3 { transition-delay: .24s; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } .float-chip { animation: none; } }
 
+/* ── Custom cursor ───────────────────────────────── */
+html.has-custom-cursor,
+html.has-custom-cursor * { cursor: none !important; }
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  will-change: transform;
+}
+.cursor-dot {
+  width: 8px; height: 8px;
+  margin-left: -4px; margin-top: -4px;
+  background: var(--primary);
+  box-shadow: 0 0 0 2px rgba(255,77,46,0.12);
+  transition: transform .18s cubic-bezier(.34,1.56,.64,1);
+  /* Gentle breathing pulse — subtle life without being distracting. Framer
+     handles hover/tap scale via its own transform, so keep this contained
+     in a separate custom prop layer... actually simpler: pause on hover. */
+  animation: cursorBreath 2.2s ease-in-out infinite;
+}
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 34px; height: 34px;
+  margin-left: -17px; margin-top: -17px;
+  background: transparent;
+  /* Dashed border with rotating animation — playful "official stamp"
+     spinning around the cursor. */
+  border: 1.5px dashed rgba(255,77,46,0.45);
+  transition: border-color .22s;
+}
+/* Framer Motion writes transform: translate + scale on the ring, so we
+   can't run a rotation animation on the same element (it'd conflict).
+   Use a pseudo-element ring instead — it inherits the parent's transform
+   naturally and can rotate on its own. */
+.cursor-ring::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255,77,46,0.45);
+  animation: cursorSpin 6s linear infinite;
+}
+.cursor-ring {
+  /* Hide the direct border since the pseudo carries the visual */
+  border: none;
+}
+.cursor-ring.is-hover::before {
+  border-color: var(--primary);
+  border-width: 2px;
+  animation-duration: 2.5s;
+}
+.cursor-dot.is-hover {
+  background: var(--primary);
+  animation-play-state: paused;
+}
+
+@keyframes cursorBreath {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(255,77,46,0.12); }
+  50%      { box-shadow: 0 0 0 5px rgba(255,77,46,0.16); }
+}
+@keyframes cursorSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-dot, .cursor-ring::before { animation: none !important; }
+}
+
+/* ── Hover micro-interactions ────────────────────── */
+.mech, .tier, .tcard, .quote {
+  transition: transform .28s cubic-bezier(.2,.7,.3,1.1), box-shadow .28s;
+}
+.mech:hover { transform: translateY(-6px) rotate(-0.5deg); box-shadow: 0 12px 0 var(--ink); }
+.tier:hover { transform: translateY(-8px); box-shadow: 0 14px 0 var(--ink); }
+.tier.pop:hover { box-shadow: 0 14px 0 var(--primary); }
+.tcard:hover { transform: translateY(-4px) rotate(0.4deg); }
+.quote:hover { transform: translateY(-4px); box-shadow: 0 12px 0 var(--ink); }
+.store-btn svg { transition: transform .3s cubic-bezier(.2,.9,.3,1.3); }
+.store-btn:hover svg { transform: rotate(-8deg) scale(1.1); }
+.nav__links a { position: relative; }
+.nav__links a::after {
+  content: ""; position: absolute; left: 0; right: 100%; bottom: -6px;
+  height: 2px; background: var(--primary); border-radius: 2px;
+  transition: right .25s cubic-bezier(.2,.7,.3,1);
+}
+.nav__links a:hover::after { right: 0; }
+.nav.scrolled { border-color: var(--ink); background: color-mix(in oklab, var(--cream) 94%, transparent); }
+
+/* ── Phone mockup content animations ─────────────── */
+/* Verdict-first narrative: question → winner + stamp + confetti (the reveal)
+   → then breakdown bars fill in (the proof) → final line + action bar. */
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes riseUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rwPop {
+  0% { transform: scale(0.4); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes stampDrop {
+  0% { transform: rotate(-6deg) scale(2.4); opacity: 0; }
+  70% { transform: rotate(-14deg) scale(0.95); opacity: 1; }
+  100% { transform: rotate(-6deg) scale(1); opacity: 1; }
+}
+
+/* 1. Question */
+.scr .rq { animation: fade .5s ease both; animation-delay: 0.2s; }
+
+/* 2. Verdict reveal (winner + stamp) — the dramatic moment */
+.scr .rw {
+  animation: rwPop 0.6s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: 0.6s;
+}
+.scr .stamp--lg {
+  animation: stampDrop 0.7s cubic-bezier(.34,1.4,.64,1) both;
+  animation-delay: 1.0s;
+}
+.scr .rstats { animation: fade .5s ease both; animation-delay: 1.6s; }
+
+/* 3. Breakdown proof — bars rise + fill after the verdict lands */
+.scr .breakdown__label { animation: fade .5s ease both; animation-delay: 2.1s; }
+.scr .bar-row { animation: riseUp .55s cubic-bezier(.2,.7,.3,1) both; }
+.scr .bar-row:nth-child(1) { animation-delay: 2.3s; }
+.scr .bar-row:nth-child(2) { animation-delay: 2.55s; }
+.scr .bar-row:nth-child(3) { animation-delay: 2.8s; }
+/* Bars render at their inline width right away; the riseUp animation on
+   .bar-row gives the "arriving" flourish. No delay animation on the fill
+   itself — that only causes an empty-bar window during the delay. */
+
+/* 4. Final line + action bar */
+.scr .final-line { animation: fade .5s ease both; animation-delay: 3.4s; }
+.action-bar {
+  animation: riseUp .55s cubic-bezier(.2,.7,.3,1) both;
+  animation-delay: 3.6s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scr *, .cursor-dot, .cursor-ring { animation: none !important; }
+}
+
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 940px) {
   .hero__grid { grid-template-columns: 1fr; gap: 12px; }
   .hero__art { min-height: 480px; margin-top: 18px; }
-  .steps, .mech-grid, .price-grid, .quotes { grid-template-columns: 1fr; }
+  .mech-grid, .price-grid, .quotes { grid-template-columns: 1fr; }
+  /* Neon stage tightens on smaller screens. */
+  .stage { min-height: 420px; padding: 70px 12px; }
+  .stage__lines { height: 130px; }
+  .stage-step__n { width: 66px; height: 66px; font-size: 28px; }
   .team-grid { grid-template-columns: 1fr 1fr; }
   .split { grid-template-columns: 1fr; gap: 36px; }
   .cluster { min-height: 380px; }
-  .nav__links { display: none; }
+  .nav__links,
+  .nav__primary { display: none; }
+  .nav__burger { display: inline-flex; margin-left: auto; }
+  .nav__row { height: 68px; }
 }
 @media (max-width: 560px) {
   .team-grid { grid-template-columns: 1fr; }
-  .nav__cta .btn--ghost { display: none; }
   .hero h1 .hl { white-space: normal; }
+  .footer__in { flex-direction: column; gap: 32px; }
+  .footer__brand { max-width: none; }
+  .footer__cols { gap: 32px 40px; }
+  .footer__base { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+/* ── Comparison table ────────────────────────────── */
+.cmp-table {
+  margin-top: 44px;
+  background: var(--paper);
+  border: 2.5px solid var(--ink);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.cmp-row {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(4, 1fr);
+  align-items: center;
+  border-bottom: 1.5px solid var(--line);
+}
+.cmp-row:last-child { border-bottom: none; }
+.cmp-row--head {
+  background: var(--cream);
+  border-bottom: 2.5px solid var(--ink);
+}
+.cmp-cell {
+  padding: 16px 14px;
+  text-align: center;
+  font-family: var(--body); font-weight: 600; font-size: 14px;
+  color: var(--ink);
+}
+.cmp-cell--feat {
+  text-align: left;
+  font-family: var(--display); font-weight: 700;
+  font-size: 14.5px;
+  padding-left: 22px;
+  border-right: 1.5px solid var(--line);
+}
+.cmp-row--head .cmp-cell {
+  font-family: var(--display); font-weight: 800;
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+}
+.cmp-cell.is-primary {
+  background: rgba(255,77,46,0.06);
+  position: relative;
+}
+.cmp-row--head .cmp-cell.is-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.cmp-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 7px;
+}
+.cmp-ico--yes {
+  background: var(--primary);
+  border: 2px solid var(--ink);
+}
+.cmp-ico--yes svg { width: 11px; height: 9px; }
+.cmp-ico--no {
+  background: transparent;
+  border: 2px solid var(--line);
+}
+.cmp-ico--no svg { width: 10px; height: 10px; }
+
+/* ── FAQ accordion ───────────────────────────────────
+   Button-based toggle now (was <details>) so framer-motion can animate the
+   open/close smoothly and the question number can share the toggle row. */
+.faq { padding-top: 40px; }
+.faq-list {
+  max-width: 820px;
+  margin: 44px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.faq-item {
+  position: relative;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow .28s ease, border-color .28s ease, background .28s ease, transform .2s ease;
+}
+.faq-item:hover:not(.is-open) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--ink);
+}
+.faq-item.is-open {
+  background: var(--cream);
+  border-color: var(--primary);
+  box-shadow: 0 6px 0 var(--primary), 0 16px 30px -14px rgba(255,77,46,0.32);
+}
+/* Left rail accent — orange bar slides in when open, sells the "active" state */
+.faq-item::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 4px;
+  background: var(--primary);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform .35s cubic-bezier(.32,1.2,.4,1);
+}
+.faq-item.is-open::before { transform: scaleY(1); }
+
+.faq-item__toggle {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+.faq-item__num {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(28,24,32,0.32);
+  min-width: 26px;
+  transition: color .3s ease;
+}
+.faq-item.is-open .faq-item__num { color: var(--primary); }
+.faq-item__q {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--ink);
+  flex: 1;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+.faq-item__ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--ink);
+  border-radius: 9px;
+  background: var(--paper);
+  color: var(--ink);
+  flex-shrink: 0;
+  transition:
+    transform .35s cubic-bezier(.32,1.2,.4,1),
+    background .3s ease,
+    color .3s ease;
+}
+.faq-item__ico svg { width: 14px; height: 14px; }
+.faq-item.is-open .faq-item__ico {
+  transform: rotate(180deg);
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--ink);
+}
+.faq-item__a {
+  padding: 4px 22px 22px 64px;
+  font-size: 15.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.faq-item__a a { color: var(--primary); font-weight: 700; }
+
+/* ── Extra responsive polish ─────────────────────── */
+@media (max-width: 1024px) {
+  .price-grid { grid-template-columns: 1fr 1fr; }
+  .tier.pop { grid-column: 1 / -1; }
+  .cmp-cell { padding: 14px 10px; font-size: 13px; }
+  .cmp-cell--feat { padding-left: 16px; font-size: 13.5px; }
+}
+@media (max-width: 768px) {
+  .cmp-row { grid-template-columns: 1.4fr repeat(4, 1fr); }
+  .cmp-cell { padding: 12px 6px; }
+  .cmp-cell--feat { padding-left: 12px; font-size: 12.5px; }
+  .cmp-row--head .cmp-cell { font-size: 11px; }
+  .faq-item__q { font-size: 16px; }
+  .faq-item__toggle { padding: 15px 18px; gap: 12px; }
+  .faq-item__num { font-size: 12px; min-width: 22px; }
+  .faq-item__a { padding: 2px 18px 18px 52px; font-size: 14.5px; }
+}
+@media (max-width: 560px) {
+  .price-grid { grid-template-columns: 1fr; }
+  .tier.pop { grid-column: auto; }
+  /* Turn the comparison into stacked cards on mobile — a squished 5-column
+     grid is unreadable on a phone. */
+  .cmp-table { border-radius: 18px; }
+  .cmp-row { grid-template-columns: 1fr; padding: 12px 14px; gap: 8px; }
+  .cmp-row--head { display: none; }
+  .cmp-cell {
+    padding: 4px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    text-align: left;
+    border-right: none !important;
+  }
+  .cmp-cell--feat {
+    font-family: var(--display); font-weight: 800; font-size: 15px;
+    color: var(--ink);
+    padding: 0 0 8px;
+    border-bottom: 1.5px solid var(--line);
+    text-align: left; justify-content: flex-start;
+  }
+  .cmp-cell:not(.cmp-cell--feat)::before {
+    content: attr(data-col);
+    font-family: var(--display); font-weight: 700; font-size: 13px;
+    color: var(--muted);
+  }
+  .cmp-cell.is-primary { background: transparent; }
+  .cmp-cell.is-primary::before { color: var(--primary); font-weight: 800; }
+}
+@media (max-width: 480px) {
+  .wrap { padding: 0 18px; }
+  .hero { padding-top: 32px; }
+  .phone, .phone-wrap, .phone-scene { width: 260px; }
+  .float-chip { font-size: 11.5px; padding: 6px 11px; }
+  .stat b { font-size: 34px; }
+}
+
+/* ── Marquee band ────────────────────────────────── */
+.marquee {
+  border-top: 2.5px solid var(--ink);
+  border-bottom: 2.5px solid var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+  padding: 18px 0;
+  overflow: hidden;
+  position: relative;
+  transform: rotate(-1deg);
+  margin: 12px 0 0;
+}
+.marquee__track {
+  display: inline-flex;
+  gap: 32px;
+  align-items: center;
+  white-space: nowrap;
+  animation: marqueeScroll 42s linear infinite;
+  will-change: transform;
+  padding-left: 32px;
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+}
+.marquee__em { font-size: 26px; }
+.marquee__dot { color: var(--primary); font-size: 32px; margin-left: 8px; }
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+}
+
+/* ── Stat counter reveal ─────────────────────────── */
+.stat b { transition: color .3s; }
+.stat.is-counting b { color: var(--primary); }
+
+/* ── Mechanic card icon wiggle on hover ──────────── */
+.mech__ico { transition: transform .3s cubic-bezier(.34,1.4,.64,1); }
+.mech:hover .mech__ico { animation: iconWiggle .55s cubic-bezier(.34,1.4,.64,1); }
+@keyframes iconWiggle {
+  0%   { transform: rotate(0) scale(1); }
+  25%  { transform: rotate(-14deg) scale(1.15); }
+  55%  { transform: rotate(12deg) scale(1.15); }
+  80%  { transform: rotate(-6deg) scale(1.08); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+/* ── Mechanics premium polish ────────────────────────
+   Framer-motion drives entry + 3D tilt on .mech, so the legacy CSS hover
+   transform below is neutralized (an inline transform would already win, but
+   this removes any late paint-flash). Spotlight, corners, and number badge
+   sit inside an isolated stacking context so a negative z-index on the
+   spotlight stays visually below content without leaking to the section. */
+.mech-grid { perspective: 1400px; }
+.mech {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  will-change: transform;
+}
+.mech:hover { transform: none; }
+
+/* Cursor-following radial highlight — inline `background` is set by
+   useMotionTemplate so the gradient tracks the mouse in real time. */
+.mech__spot {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s ease;
+  border-radius: inherit;
+}
+.mech:hover .mech__spot { opacity: 1; }
+
+/* Film-marker corners — colored per card via inline `borderColor`.
+   Idle: hidden. Hover: fade in + push outward for the "framed" beat. */
+.mech__corner {
+  position: absolute;
+  width: 18px; height: 18px;
+  border: 2.5px solid;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s ease, transform .4s cubic-bezier(.34,1.4,.64,1);
+}
+.mech:hover .mech__corner { opacity: 0.9; }
+.mech__corner--tl { top: 14px; left: 14px; border-right: 0; border-bottom: 0; border-top-left-radius: 5px; }
+.mech__corner--tr { top: 14px; right: 14px; border-left: 0; border-bottom: 0; border-top-right-radius: 5px; }
+.mech__corner--bl { bottom: 14px; left: 14px; border-right: 0; border-top: 0; border-bottom-left-radius: 5px; }
+.mech__corner--br { bottom: 14px; right: 14px; border-left: 0; border-top: 0; border-bottom-right-radius: 5px; }
+.mech:hover .mech__corner--tl { transform: translate(-4px, -4px); }
+.mech:hover .mech__corner--tr { transform: translate(4px, -4px); }
+.mech:hover .mech__corner--bl { transform: translate(-4px, 4px); }
+.mech:hover .mech__corner--br { transform: translate(4px, 4px); }
+
+/* Head row lays out the icon and the oversized numeral in opposite corners. */
+.mech__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.mech__num {
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  opacity: 0.28;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.mech:hover .mech__num { opacity: 0.72; transform: translateY(-2px); }
+
+/* Idle float on the icon — hover rule (iconWiggle) has higher specificity
+   so it takes over during hover without a JS gate. */
+.mech__ico {
+  animation: mechIcoFloat 4s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes mechIcoFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* Enhanced tag pill — inline flex so the pulse dot sits inline with text. */
+.mech__tag {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+}
+.mech__tag-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  flex-shrink: 0;
+  animation: tagPulse 2.4s ease-in-out infinite;
+}
+@keyframes tagPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(1.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mech__ico, .mech__tag-dot { animation: none; }
+  .mech__corner { display: none; }
+}
+
+/* ── Mini card demos (Open vote / Anonymous & ranked) ──
+   Both demos share `.demo-row` — a bordered pill with a left badge and a
+   right bar/mask. Sizing is tuned to match the WheelButton visual weight
+   (~90px total) so all three cards read as siblings. */
+.mech-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 240px;
+  align-self: flex-start;
+}
+.demo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 4px 4px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.6);
+  height: 28px;
+  box-sizing: border-box;
+}
+.demo-lbl {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 800;
+  line-height: 1;
+}
+.demo-lbl--num {
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  background: var(--green);
+  border: 2px solid var(--ink);
+  color: #fff;
+  font-size: 11px;
+}
+.demo-lbl--txt {
+  min-width: 46px;
+  padding: 0 4px 0 6px;
+  color: var(--ink);
+  opacity: 0.78;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  justify-content: flex-start;
+  place-items: center start;
+}
+
+/* Vote bar — right side of row 1, holds a themed fill */
+.demo-bar {
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(28,24,32,0.14);
+  overflow: hidden;
+  position: relative;
+}
+.demo-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--primary);
+  opacity: 0.55;
+}
+.demo-fill--win {
+  opacity: 1;
+  background: linear-gradient(90deg, var(--primary), #FF7A3E);
+  position: relative;
+  overflow: hidden;
+}
+.demo-fill--win::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 20%, rgba(255,255,255,0.55) 50%, transparent 80%);
+  transform: translateX(-100%);
+  animation: voteShine 2.4s ease-in-out infinite;
+}
+@keyframes voteShine {
+  0%   { transform: translateX(-100%); }
+  55%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Masked "anonymous content" strips inside rank rows */
+.demo-mask {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+}
+.demo-mask span {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(28,24,32,0.28);
+  animation: rankPulse 2s ease-in-out infinite;
+}
+.demo-mask span:nth-child(1) { width: 44%; }
+.demo-mask span:nth-child(2) { width: 26%; animation-delay: 0.25s; }
+.demo-mask span:nth-child(3) { width: 14%; animation-delay: 0.5s; }
+@keyframes rankPulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 0.95; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-fill--win::after, .demo-mask span { animation: none; }
+}
+
+/* ── Pro split polish (right cluster + feature list) ──
+   Slots wrap each floating card. The slot handles absolute positioning +
+   idle bob (CSS transform), while the inner .pcard is driven by framer-motion
+   for entry + hover. Two elements → two transforms → no fight. */
+.pc-slot {
+  position: absolute;
+  will-change: transform;
+}
+.pc-slot .pcard {
+  position: relative;
+  top: auto; left: auto; right: auto; bottom: auto;
+  transform-origin: center center;
+  cursor: default;
+}
+.pc-slot--1 { animation: pcBob1 6.5s ease-in-out infinite; }
+.pc-slot--2 { animation: pcBob2 5.8s ease-in-out infinite 0.8s; }
+.pc-slot--3 { animation: pcBob3 7.2s ease-in-out infinite 1.6s; }
+@keyframes pcBob1 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-9px); }
+}
+@keyframes pcBob2 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+@keyframes pcBob3 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-11px); }
+}
+
+/* Live countdown ring — sweeps from full to empty then snaps back to full,
+   selling the "auto-close timer" idea without any JS. */
+.ring--live .ring__progress {
+  animation: ringCountdown 5.5s ease-in-out infinite;
+}
+@keyframes ringCountdown {
+  0%   { stroke-dashoffset: 0; }
+  90%  { stroke-dashoffset: 107; }
+  91%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Feature-list rows — hover fills the check tile with a soft glow so the
+   list feels responsive without pulling attention from the cards. */
+.feat--anim { cursor: default; transition: transform .3s cubic-bezier(.32,1.2,.4,1); }
+.feat--anim .feat__check {
+  position: relative;
+  transition: transform .35s cubic-bezier(.34,1.4,.64,1), box-shadow .3s ease;
+}
+.feat--anim:hover .feat__check {
+  transform: rotate(-4deg) scale(1.08);
+  box-shadow: 0 0 0 4px rgba(255,77,46,0.18), var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-slot--1, .pc-slot--2, .pc-slot--3, .ring--live .ring__progress { animation: none; }
+}
+
+/* ── Popular tier badge pulse ────────────────────── */
+.tier__pop { animation: popPulse 3s ease-in-out infinite; }
+@keyframes popPulse {
+  0%, 100% { transform: rotate(0) scale(1); box-shadow: var(--shadow-sm); }
+  50%      { transform: rotate(-2deg) scale(1.06); box-shadow: 0 6px 0 var(--ink); }
+}
+
+/* ── Cinematic splash intro ──────────────────────── */
+/* Full-screen black overlay that replays the app's splash-screen gavel
+   strike + VERDICT stamp before revealing the landing. Feels like the
+   opening title card of a film. */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity .7s cubic-bezier(.2,.7,.3,1),
+              transform .8s cubic-bezier(.6,0,.3,1);
+  transform-origin: center;
+  perspective: 1600px;
+}
+.splash.is-exiting {
+  opacity: 0;
+  transform: scale(1.18);
+  pointer-events: none;
+}
+.splash__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  padding-bottom: 40px;
+  transform: translateZ(0);
+  animation: splashStageIn .6s cubic-bezier(.2,.9,.3,1.2) both;
+}
+@keyframes splashStageIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Badge - the rounded black square with white circle */
+.splash__badge {
+  position: relative;
+  width: 200px; height: 200px;
+  animation: badgePop .55s cubic-bezier(.2,.9,.3,1.2) both,
+             badgeJolt .28s ease-out both;
+  animation-delay: 0s, 950ms;
+}
+@keyframes badgePop {
+  from { opacity: 0; transform: scale(0.55); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes badgeJolt {
+  0%   { translate: 0 0; rotate: 0deg; }
+  25%  { translate: 3px 4px; rotate: 0.8deg; }
+  55%  { translate: -3px -2px; rotate: -0.7deg; }
+  80%  { translate: 2px 1px; rotate: 0.4deg; }
+  100% { translate: 0 0; rotate: 0deg; }
+}
+.splash__badge svg { display: block; }
+
+/* White circle inside badge - scales in from 0 */
+.splash__circle {
+  transform-origin: 256px 256px;
+  transform-box: fill-box;
+  animation: circleGrow .5s cubic-bezier(.2,.8,.3,1.1) both;
+  animation-delay: 150ms;
+}
+@keyframes circleGrow {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+/* Sound block - slides + fades in from just below */
+.splash__block {
+  transform-origin: 290px 351px;
+  transform-box: fill-box;
+  animation: blockIn .4s ease-out both,
+             blockThud .3s ease-out both;
+  animation-delay: 350ms, 950ms;
+}
+@keyframes blockIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes blockThud {
+  0%   { transform: scale(1, 1); }
+  35%  { transform: scale(1.06, 0.82); }
+  100% { transform: scale(1, 1); }
+}
+
+/* Gavel - hidden, then swings from -38° down through +11°, recoils to 0 */
+.splash__gavel {
+  transform-origin: 87px 369px;
+  transform-box: fill-box;
+  opacity: 0;
+  animation: gavelReveal 100ms linear both,
+             gavelSwing 900ms cubic-bezier(.3,.1,.3,1) both;
+  animation-delay: 450ms, 450ms;
+}
+@keyframes gavelReveal {
+  to { opacity: 1; }
+}
+@keyframes gavelSwing {
+  0%   { transform: rotate(-38deg); }
+  52%  { transform: rotate(11deg); }
+  68%  { transform: rotate(-6deg); }
+  85%  { transform: rotate(3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Ripple - fires on impact, expands and fades */
+.splash__ripple {
+  transform-origin: 300px 302px;
+  transform-box: fill-box;
+  opacity: 0;
+  animation: ripplePop 700ms cubic-bezier(.1,.6,.3,1) both;
+  animation-delay: 950ms;
+}
+@keyframes ripplePop {
+  0%   { transform: scale(0.15); opacity: 0.9; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Wordmark - each letter stamps in with a small overshoot */
+.splash__word {
+  display: flex;
+  gap: 4px;
+  color: #FAF5EC;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 36px;
+  letter-spacing: 11.5px;
+}
+.splash__letter {
+  display: inline-block;
+  opacity: 0;
+  animation: letterStamp 450ms cubic-bezier(.2,1.4,.4,1) both;
+}
+@keyframes letterStamp {
+  from { opacity: 0; transform: scale(1.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Red underline draws left → right */
+.splash__underline {
+  width: 210px;
+  height: 6px;
+  background: #FF4D2E;
+  border-radius: 1px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: underlineDraw 500ms cubic-bezier(.2,.8,.2,1) both;
+  animation-delay: 1350ms;
+}
+@keyframes underlineDraw {
+  to { transform: scaleX(1); }
+}
+
+/* Tagline - fades + slides up */
+.splash__tagline {
+  color: #7A7A7A;
+  font-family: var(--body);
+  font-size: 12px;
+  letter-spacing: 4.6px;
+  text-transform: uppercase;
+  margin-right: -4.6px;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: taglineIn 600ms ease both;
+  animation-delay: 1550ms;
+}
+@keyframes taglineIn {
+  to { opacity: 1; transform: none; }
+}
+
+.splash__skip {
+  position: absolute;
+  bottom: 40px;
+  color: #4A4A4A;
+  font-family: var(--body);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: taglineIn 500ms ease both;
+  animation-delay: 2000ms;
+}
+
+/* ── Subtle brand accent drifters ────────────────── */
+/* Three tiny orange gavels drifting slowly. Kept at 4% opacity + blur so
+   they read as brand texture, never distracting content. */
+.drift-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.drift {
+  position: absolute;
+  opacity: 0.04;
+  animation: driftAcross linear infinite;
+  will-change: transform;
+  display: inline-flex;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.drift svg { display: block; }
+.drift-1 { top: 15%; animation-duration: 85s;  animation-delay: -12s; }
+.drift-2 { top: 50%; animation-duration: 105s; animation-delay: -45s; }
+.drift-3 { top: 80%; animation-duration: 95s;  animation-delay: -70s; }
+
+@keyframes driftAcross {
+  from { transform: translateX(-8vw) rotate(-6deg); }
+  to   { transform: translateX(108vw) rotate(6deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .drift { animation: none; opacity: 0; }
+}
+
+/* ── Filmic grain overlay ─────────────────────────── */
+/* SVG turbulence noise, fixed on the viewport, blend-mode overlay for a
+   subtle cinematic texture — the "video look" without a real video. Sits
+   above everything but doesn't intercept pointer events. */
+/* Static noise texture — animating background-position on a fixed,
+   mix-blend-mode: overlay layer forced the entire viewport to
+   re-composite every frame. Keep the film-grain texture, drop the
+   motion; the still texture still reads as "not sterile digital". */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+/* Soft radial vignette that darkens the page edges — pushes attention to
+   the center content, like a cinematic frame. Only kicks in on larger
+   screens where the effect reads. */
+@media (min-width: 940px) {
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(28,24,32,0.06) 100%);
+  }
 }

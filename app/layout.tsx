@@ -1,12 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Cursor from "@/components/Cursor";
+import SplashIntro from "@/components/SplashIntro";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://verdict.app";
 const SITE_NAME = "Verdict";
-const TITLE = "Verdict — End the group-chat debate";
+const TITLE = "Verdict - End the group-chat debate";
 const DESCRIPTION =
-  "Verdict turns the endless “idk, what do you want?” into one tap, one vote, one final answer. The group-chat debate ender — decide in about 30 seconds.";
+  "Verdict turns the endless “idk, what do you want?” into one tap, one vote, one final answer. The group-chat debate ender - decide in about 30 seconds.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -83,11 +85,7 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
   },
   manifest: "/manifest.webmanifest",
-  icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
-    shortcut: ["/icon.svg"],
-  },
+  // Icons auto-detected from app/icon.png + app/apple-icon.tsx by Next.js.
 };
 
 export const viewport: Viewport = {
@@ -109,7 +107,7 @@ const structuredData = {
       "@id": `${SITE_URL}/#organization`,
       name: SITE_NAME,
       url: SITE_URL,
-      logo: `${SITE_URL}/icon.svg`,
+      logo: `${SITE_URL}/verdict-logo.png`,
       sameAs: [
         "https://twitter.com/verdictapp",
         "https://www.instagram.com/verdictapp",
@@ -167,7 +165,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <SplashIntro />
+        <Cursor />
+        {children}
+      </body>
     </html>
   );
 }

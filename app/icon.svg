@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <rect width="200" height="200" rx="44" fill="#FF4D2E"/>
-  <g transform="translate(100 100) rotate(-7)">
-    <rect x="-58" y="-32" width="116" height="64" rx="14" fill="none" stroke="#FAF5EC" stroke-width="8"/>
-    <text x="0" y="13" text-anchor="middle" font-family="'Bricolage Grotesque', 'Arial Black', Arial, sans-serif" font-size="44" font-weight="800" letter-spacing="2" fill="#FAF5EC">V.</text>
-  </g>
-</svg>

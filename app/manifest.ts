@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Verdict — End the group-chat debate",
+    name: "Verdict - End the group-chat debate",
     short_name: "Verdict",
     description:
       "One tap, one vote, one final answer. The group-chat debate ender.",

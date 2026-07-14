@@ -22,7 +22,7 @@ export async function joinWaitlist(formData: FormData): Promise<WaitlistResult> 
 
   if (!apiKey || !audienceId) {
     console.log(
-      `[waitlist] (no Resend creds — would store) ${email} @ ${new Date().toISOString()}`
+      `[waitlist] (no Resend creds - would store) ${email} @ ${new Date().toISOString()}`
     );
     return { ok: true };
   }
@@ -52,13 +52,13 @@ export async function joinWaitlist(formData: FormData): Promise<WaitlistResult> 
     console.error("[waitlist] Resend error", res.status, body);
     return {
       ok: false,
-      error: "Couldn't save your spot — please try again in a moment.",
+      error: "Couldn't save your spot - please try again in a moment.",
     };
   } catch (err) {
     console.error("[waitlist] network error", err);
     return {
       ok: false,
-      error: "Network hiccup — please try again.",
+      error: "Network hiccup - please try again.",
     };
   }
 }

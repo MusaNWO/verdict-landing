@@ -2,24 +2,28 @@ export default function StatsBar() {
   return (
     <section className="statbar">
       <div className="statbar__in">
-        <div className="stat reveal">
+        <div className="stat reveal" data-count="30">
           <b>
-            30<span className="accent">s</span>
+            <span className="stat__num">30</span>
+            <span className="accent">s</span>
           </b>
           <span>AVERAGE TIME TO DECIDE</span>
         </div>
         <div className="stat reveal d1">
-          <b>3–6</b>
-          <span>FRIENDS PULLED IN PER ROOM</span>
+          <b>&infin;</b>
+          <span>VOTERS PER VERDICT</span>
         </div>
         <div className="stat reveal d2">
           <b>
-            2.4<span className="accent">M</span>
+            <span className="accent">$</span>
+            <span className="stat__num">0</span>
           </b>
-          <span>DINNERS SETTLED</span>
+          <span>TO START, FOREVER</span>
         </div>
         <div className="stat reveal d3">
-          <b>0</b>
+          <b>
+            <span className="stat__num">0</span>
+          </b>
           <span>ARGUMENTS SURVIVED</span>
         </div>
       </div>

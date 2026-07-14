@@ -5,14 +5,14 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How Verdict collects, uses, and protects your information — including waitlist emails and future app data.",
+    "How Verdict collects, uses, and protects your information - including waitlist emails and future app data.",
   alternates: {
     canonical: "/privacy",
   },
   openGraph: {
     title: "Privacy Policy · Verdict",
     description:
-      "How Verdict collects, uses, and protects your information — including waitlist emails and future app data.",
+      "How Verdict collects, uses, and protects your information - including waitlist emails and future app data.",
     url: "/privacy",
   },
 };
@@ -107,15 +107,15 @@ export default function PrivacyPage() {
             </p>
             <ul>
               <li>
-                <strong>Consent</strong> — when you submit your email to join
+                <strong>Consent</strong> - when you submit your email to join
                 the waitlist
               </li>
               <li>
-                <strong>Legitimate interests</strong> — to secure and operate
+                <strong>Legitimate interests</strong> - to secure and operate
                 the site, prevent spam, and improve our services
               </li>
               <li>
-                <strong>Legal obligation</strong> — when we must retain or
+                <strong>Legal obligation</strong> - when we must retain or
                 disclose information to comply with law
               </li>
             </ul>
@@ -130,11 +130,11 @@ export default function PrivacyPage() {
             </p>
             <ul>
               <li>
-                <strong>Resend</strong> — stores waitlist email contacts and
+                <strong>Resend</strong> - stores waitlist email contacts and
                 may send transactional or product emails on our behalf
               </li>
               <li>
-                <strong>Vercel</strong> — hosts this website and may process
+                <strong>Vercel</strong> - hosts this website and may process
                 request logs as part of delivering the site
               </li>
             </ul>
