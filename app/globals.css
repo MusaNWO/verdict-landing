@@ -2644,7 +2644,11 @@ html.has-custom-cursor * { cursor: none !important; }
    opening title card of a film. */
 .splash {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   z-index: 999;
   background: #000;
   display: flex;
@@ -2656,7 +2660,15 @@ html.has-custom-cursor * { cursor: none !important; }
               transform .8s cubic-bezier(.6,0,.3,1);
   transform-origin: center;
   perspective: 1600px;
+  overflow: hidden;
 }
+/* Force every child of splash-stage to sit on the viewport centerline.
+   Badge SVG + wordmark + underline all get explicit auto margins so they
+   can't drift from misapplied text-align inheritance or flex quirks. */
+.splash__stage { text-align: center; align-items: center; width: 100%; }
+.splash__badge { margin-left: auto; margin-right: auto; }
+.splash__word { justify-content: center; margin-right: -11.5px; }
+.splash__underline { margin-left: auto; margin-right: auto; }
 .splash.is-exiting {
   opacity: 0;
   transform: scale(1.18);
@@ -2826,17 +2838,6 @@ html.has-custom-cursor * { cursor: none !important; }
   animation-delay: 2000ms;
 }
 
-/* Splash — true-center the VERDICT wordmark. Letter-spacing adds trailing
-   space after the last letter which shifts the flex-item box right of
-   optical center. `justify-content: center` on the flex row + a negative
-   right margin (~= letter-spacing) trims that trailing space so the word
-   and underline sit on the same vertical axis as the badge. */
-.splash__stage { text-align: center; }
-.splash__word {
-  justify-content: center;
-  margin-right: -11.5px;
-  padding-left: 11.5px;
-}
 
 /* ── Subtle brand accent drifters ────────────────── */
 /* Three tiny orange gavels drifting slowly. Kept at 4% opacity + blur so
