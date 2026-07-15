@@ -108,15 +108,15 @@ const SECTIONS: Section[] = [
         </p>
         <ul>
           <li>
-            <strong>Consent</strong> — when you submit your email to join the
+            <strong>Consent</strong>: when you submit your email to join the
             waitlist
           </li>
           <li>
-            <strong>Legitimate interests</strong> — to secure and operate the
+            <strong>Legitimate interests</strong>: to secure and operate the
             site, prevent spam, and improve our services
           </li>
           <li>
-            <strong>Legal obligation</strong> — when we must retain or
+            <strong>Legal obligation</strong>: when we must retain or
             disclose information to comply with law
           </li>
         </ul>
@@ -134,11 +134,11 @@ const SECTIONS: Section[] = [
         </p>
         <ul>
           <li>
-            <strong>Resend</strong> — stores waitlist email contacts and may
+            <strong>Resend</strong>: stores waitlist email contacts and may
             send transactional or product emails on our behalf
           </li>
           <li>
-            <strong>Vercel</strong> — hosts this website and may process
+            <strong>Vercel</strong>: hosts this website and may process
             request logs as part of delivering the site
           </li>
         </ul>
@@ -278,7 +278,7 @@ export default function PrivacyPage() {
             </h1>
             <p className="pv-hero__lede">
               We built Verdict to end debates, not to profile you. Here&rsquo;s
-              exactly what we collect, why, and how you can take it back — in
+              exactly what we collect, why, and how you can take it back, in
               plain English.
             </p>
             <div className="pv-hero__meta">
