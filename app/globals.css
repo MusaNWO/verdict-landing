@@ -72,10 +72,15 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
   background: var(--ink); color: var(--cream);
   border: 2.5px solid var(--ink); border-radius: 14px;
   padding: 11px 20px; cursor: pointer; box-shadow: var(--shadow-sm);
-  transition: transform .1s ease, box-shadow .1s ease;
+  transition: transform .15s cubic-bezier(.34,1.4,.64,1), box-shadow .15s ease;
 }
-.store-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--ink); }
-.store-btn svg { width: 26px; height: 26px; flex-shrink: 0; }
+.store-btn:hover { transform: translateY(-3px); box-shadow: 0 7px 0 var(--ink); }
+.store-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--ink); }
+.store-btn svg {
+  width: 26px; height: 26px; flex-shrink: 0;
+  transition: transform .35s cubic-bezier(.34,1.5,.64,1);
+}
+.store-btn:hover svg { transform: rotate(-10deg) scale(1.12); }
 .store-btn .sb-top { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
 .store-btn .sb-main { font-family: var(--display); font-weight: 700; font-size: 17px; line-height: 1; margin-top: 2px; }
 
@@ -88,143 +93,222 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 }
 .stamp--lg { font-size: 30px; border-width: 4px; padding: 8px 22px; }
 
-/* ── Nav — Editorial full-width bar ──────────────── */
-/* Newspaper masthead vibe: full-width, cream on cream, big bold Verdict
-   wordmark, links in the center, single primary CTA on the right. No
-   floating card, no glass blur, no dashed dividers. Confidence over
-   decoration. */
+/* ── Nav — flush top · logo left · links mid · CTA right ─ */
 .nav {
   position: sticky;
   top: 0;
   z-index: 200;
-  background-color: #FAF5EC !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  opacity: 1 !important;
+  background: #FAF5EC;
   isolation: isolate;
   border-bottom: 2px solid transparent;
-  transition: border-color .25s, box-shadow .25s;
+  transition:
+    border-color .3s cubic-bezier(.2,.8,.2,1),
+    box-shadow .3s cubic-bezier(.2,.8,.2,1),
+    background .3s ease;
 }
 .nav.scrolled {
   border-color: var(--ink);
-  box-shadow: 0 6px 22px -14px rgba(28,24,32,0.18);
+  background: rgba(250, 245, 236, 0.97);
+  box-shadow: 0 8px 24px -18px rgba(28, 24, 32, 0.28);
+}
+.nav.scrolled .nav__row {
+  height: 64px;
 }
 .nav__row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  height: 78px;
-  gap: 24px;
+  height: 72px;
+  gap: 16px;
+  transition: height .3s cubic-bezier(.2,.8,.2,1);
 }
+
+/* Entrance — brand, links, CTA stagger in from above */
+.nav__anim {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.nav--entered .nav__anim {
+  animation: navDropIn 0.55s cubic-bezier(.2,.9,.3,1.2) forwards;
+}
+.nav--entered .nav__anim--1 { animation-delay: 0.04s; }
+.nav--entered .nav__anim--2 { animation-delay: 0.1s; }
+.nav--entered .nav__anim--3 { animation-delay: 0.14s; }
+.nav--entered .nav__anim--4 { animation-delay: 0.18s; }
+.nav--entered .nav__anim--5 { animation-delay: 0.22s; }
+.nav--entered .nav__anim--6 { animation-delay: 0.26s; }
+.nav--entered .nav__anim--7 { animation-delay: 0.32s; }
+@keyframes navDropIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .nav__brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   color: var(--ink);
+  justify-self: start;
   flex-shrink: 0;
 }
 .nav__brand-mark {
   display: block;
   width: 32px;
   height: 32px;
-  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  border-radius: 8px;
+  transition: transform .35s cubic-bezier(.34,1.4,.64,1);
 }
-.nav__brand:hover .nav__brand-mark { transform: rotate(-8deg) scale(1.05); }
+.nav__brand:hover .nav__brand-mark {
+  transform: rotate(-10deg) scale(1.08);
+}
 .nav__brand-word {
-  font-family: var(--display); font-weight: 800; font-size: 30px;
-  letter-spacing: -0.035em; line-height: 1;
-  display: inline-block;
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 27px;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  transition: transform .3s cubic-bezier(.34,1.4,.64,1);
 }
-.nav__brand:hover .nav__brand-word { transform: rotate(-3deg); }
+.nav__brand:hover .nav__brand-word {
+  transform: rotate(-2deg);
+}
 .nav__brand-dot {
   color: var(--primary);
   display: inline-block;
   transition: transform .3s cubic-bezier(.34,1.56,.64,1);
 }
 .nav__brand:hover .nav__brand-dot {
-  transform: translateY(3px) scale(1.5);
+  transform: translateY(2px) scale(1.25);
 }
+
 .nav__links {
   display: flex;
-  gap: 30px;
   align-items: center;
-  margin-left: auto;
+  justify-self: center;
+  gap: 4px;
+  margin: 0;
 }
 .nav__links a {
-  font-family: var(--body);
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--muted);
+  padding: 8px 11px;
+  border-radius: 10px;
+  white-space: nowrap;
   position: relative;
-  padding: 6px 0;
-  transition: color .18s;
+  transition: color .18s, background .18s, transform .18s;
 }
 .nav__links a::after {
   content: "";
   position: absolute;
-  left: 0; right: 100%;
-  bottom: 0;
+  left: 11px;
+  right: 11px;
+  bottom: 5px;
   height: 2px;
   background: var(--primary);
   border-radius: 2px;
-  transition: right .28s cubic-bezier(.2,.7,.3,1);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .28s cubic-bezier(.2,.8,.2,1);
 }
-.nav__links a:hover { color: var(--primary); }
-.nav__links a:hover::after { right: 0; }
+.nav__links a:hover {
+  color: var(--ink);
+  background: rgba(28, 24, 32, 0.05);
+  transform: translateY(-1px);
+}
+.nav__links a:hover::after {
+  transform: scaleX(1);
+}
 
+.nav__end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  justify-self: end;
+}
 .nav__primary {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--display); font-weight: 800; font-size: 15px;
-  color: #fff; background: var(--ink);
-  border: 2px solid var(--ink); border-radius: 999px;
-  padding: 12px 22px;
-  transition: transform .18s cubic-bezier(.34,1.56,.64,1), background .18s;
-  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  background: var(--primary);
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 3px 0 var(--ink);
   position: relative;
+  overflow: hidden;
+  transition: transform .12s ease, box-shadow .12s ease;
 }
 .nav__primary::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--primary);
+  background: var(--ink);
   transform: translateY(101%);
-  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  transition: transform .28s cubic-bezier(.4,0,.2,1);
   z-index: 0;
 }
 .nav__primary > * { position: relative; z-index: 1; }
+.nav__primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 var(--ink);
+}
 .nav__primary:hover::before { transform: translateY(0); }
+.nav__primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--ink);
+}
 .nav__primary-arrow {
   display: inline-block;
-  transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+  transition: transform .22s cubic-bezier(.34,1.4,.64,1);
 }
-.nav__primary:hover .nav__primary-arrow {
-  transform: translateX(4px);
-}
+.nav__primary:hover .nav__primary-arrow { transform: translateX(4px); }
+
 .nav__burger {
   display: none;
-  width: 40px; height: 40px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   background: var(--paper);
-  border: 2px solid var(--ink); border-radius: 999px;
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
   cursor: pointer;
-  align-items: center; justify-content: center;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 5px;
   box-shadow: 0 3px 0 var(--ink);
-  margin-left: auto;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.nav__burger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 var(--ink);
+}
+.nav__burger:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--ink);
 }
 .nav__burger span {
-  display: block; width: 20px; height: 2.5px;
-  background: var(--ink); border-radius: 2px;
-  transition: transform .28s cubic-bezier(.2,.9,.3,1.2), opacity .18s;
+  display: block;
+  width: 18px;
+  height: 2.5px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform .32s cubic-bezier(.2,.9,.3,1.2), opacity .2s;
   transform-origin: center;
 }
-.nav__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.nav__burger.is-open span:nth-child(2) { opacity: 0; }
-.nav__burger.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.nav__burger.is-open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.nav__burger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav__burger.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
-/* Full-screen mobile drawer */
 .nav-drawer {
   position: fixed;
   inset: 0;
@@ -233,7 +317,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
   backdrop-filter: blur(6px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity .22s ease;
+  transition: opacity .25s ease;
 }
 .nav-drawer.is-open {
   opacity: 1;
@@ -241,232 +325,479 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 }
 .nav-drawer__panel {
   position: absolute;
-  top: 78px; left: 12px; right: 12px;
+  top: 80px;
+  left: 12px;
+  right: 12px;
   background: var(--cream);
   border: 2.5px solid var(--ink);
-  border-radius: 22px;
-  box-shadow: 0 12px 0 var(--ink);
-  padding: 22px 22px 26px;
-  display: flex; flex-direction: column; gap: 18px;
-  transform: translateY(-14px);
+  border-radius: 20px;
+  box-shadow: 0 10px 0 var(--ink);
+  padding: 20px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform: translateY(-18px) scale(0.97);
   opacity: 0;
-  transition: transform .28s cubic-bezier(.2,.9,.3,1.2), opacity .22s;
+  transition:
+    transform .32s cubic-bezier(.2,.9,.3,1.2),
+    opacity .25s ease;
 }
 .nav-drawer.is-open .nav-drawer__panel {
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   opacity: 1;
 }
 .nav-drawer__links {
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
   border-top: 2px solid var(--line);
   border-bottom: 2px solid var(--line);
-  margin: 0 -8px;
+  margin: 0 -6px;
 }
-.nav-drawer__links a {
+.nav-drawer__link {
   font-family: var(--display);
   font-weight: 800;
-  font-size: 20px;
+  font-size: 18px;
   color: var(--ink);
-  padding: 14px 8px;
+  padding: 13px 8px;
   border-bottom: 1.5px solid var(--line);
-  transition: color .15s, background .15s;
+  transition: color .15s, background .15s, transform .15s;
   border-radius: 8px;
+  opacity: 0;
+  transform: translateX(-12px);
+}
+.nav-drawer.is-open .nav-drawer__link {
+  animation: drawerLinkIn 0.45s cubic-bezier(.2,.9,.3,1.2) forwards;
+  animation-delay: calc(0.06s + var(--i, 0) * 0.04s);
+}
+@keyframes drawerLinkIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 .nav-drawer__links a:last-child { border-bottom: none; }
-.nav-drawer__links a:hover { color: var(--primary); background: rgba(255,77,46,0.04); }
-.nav-drawer__cta { display: flex; flex-direction: column; gap: 10px; }
+.nav-drawer__links a:hover {
+  color: var(--primary);
+  background: rgba(255,77,46,0.04);
+  transform: translateX(4px);
+}
+.nav-drawer__cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .3s ease .28s, transform .3s cubic-bezier(.2,.9,.3,1.2) .28s;
+}
+.nav-drawer.is-open .nav-drawer__cta {
+  opacity: 1;
+  transform: translateY(0);
+}
 .nav-drawer__cta .btn { width: 100%; }
 
+@media (prefers-reduced-motion: reduce) {
+  .nav__anim,
+  .nav-drawer__link {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+  .nav-drawer__cta {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .nav__row { transition: none; }
+}
+
 /* ── Hero ────────────────────────────────────────── */
-.hero { padding: clamp(48px, 7vw, 92px) 0 clamp(64px, 8vw, 110px); overflow: hidden; position: relative; }
+.hero {
+  padding: clamp(36px, 5.5vw, 72px) 0 clamp(48px, 6vw, 88px);
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+.hero__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(52px);
+  opacity: 0.75;
+}
+.hero__blob--a {
+  width: min(560px, 74vw);
+  height: min(560px, 74vw);
+  left: -10%;
+  top: -16%;
+  background: rgba(255, 201, 77, 0.5);
+  animation: blobDrift 16s ease-in-out infinite alternate;
+}
+.hero__blob--b {
+  width: min(480px, 64vw);
+  height: min(480px, 64vw);
+  right: -8%;
+  top: 14%;
+  background: rgba(255, 77, 46, 0.26);
+  animation: blobDrift 18s ease-in-out infinite alternate-reverse;
+}
+.hero__blob--c {
+  width: min(360px, 48vw);
+  height: min(360px, 48vw);
+  left: 38%;
+  bottom: -8%;
+  background: rgba(92, 184, 255, 0.16);
+  animation: blobDrift 20s ease-in-out infinite alternate;
+}
+/* Soft paper grain wash — keeps cream from reading flat */
+.hero__paper {
+  position: absolute;
+  inset: 0;
+  opacity: 0.45;
+  background-image:
+    radial-gradient(rgba(28, 24, 32, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 248, 230, 0.35) 0%, transparent 42%, rgba(255, 236, 220, 0.2) 100%);
+  background-size: 18px 18px, 100% 100%;
+  mix-blend-mode: multiply;
+}
+@keyframes blobDrift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(3%, 4%, 0) scale(1.08); }
+}
 .hero__grid {
-  display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
 }
-.hero h1 { font-size: clamp(44px, 6.4vw, 86px); }
-.hero h1 .hl { position: relative; white-space: nowrap; color: var(--primary); }
-.hero h1 .hl::after {
-  content: ''; position: absolute; left: -2%; right: -2%; bottom: 0.08em; height: 0.28em;
-  background: var(--yellow); z-index: -1; border-radius: 3px; transform: rotate(-1deg);
+.hero__kicker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
 }
-.hero__sub { font-size: clamp(17px, 1.5vw, 21px); color: var(--muted); font-weight: 500; line-height: 1.5; margin-top: 26px; max-width: 30em; }
-.hero__cta { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 34px; }
-.hero__stores { gap: 14px; flex-wrap: wrap; }
-.hero__cta-secondary { margin-top: 2px; }
-.hero__news { margin-top: 6px; width: 100%; max-width: 34em; }
-.hero__news > summary {
-  list-style: none;
-  cursor: pointer;
+.hero__brand {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(26px, 3vw, 34px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+}
+.hero__brand-dot { color: var(--primary); }
+.hero__kicker-stamp {
+  display: inline-block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  border: 2.5px solid currentColor;
+  border-radius: 8px;
+  padding: 4px 10px;
+  transform: rotate(-4deg);
+  animation: stampWiggle 5s ease-in-out infinite;
+}
+@keyframes stampWiggle {
+  0%, 100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(-2deg) translateY(-1px); }
+}
+.hero__eyebrow {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+.hero__title {
+  font-size: clamp(42px, 6.2vw, 78px);
+  max-width: 9ch;
+  line-height: 0.98;
+  margin: 0;
+}
+.hero__line {
+  display: block;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: heroLineIn 0.7s cubic-bezier(.2,.9,.3,1.15) forwards;
+}
+.hero__line--1 { animation-delay: 0.12s; }
+.hero__line--2 { animation-delay: 0.28s; }
+@keyframes heroLineIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero__em {
+  font-style: normal;
+  color: var(--primary);
+  position: relative;
+  display: inline-block;
+}
+.hero__em::after {
+  content: "";
+  position: absolute;
+  left: -1%;
+  right: -2%;
+  bottom: 0.06em;
+  height: 0.22em;
+  background: var(--yellow);
+  z-index: -1;
+  border-radius: 2px;
+  transform: rotate(-1.2deg) scaleX(0);
+  transform-origin: left center;
+  animation: hlUnderline 0.7s cubic-bezier(.2,.8,.2,1) 0.7s forwards;
+}
+@keyframes hlUnderline {
+  to { transform: rotate(-1.2deg) scaleX(1); }
+}
+.hero__sub {
+  font-size: clamp(17px, 1.45vw, 20px);
+  color: var(--muted);
+  font-weight: 500;
+  line-height: 1.5;
+  margin-top: 20px;
+  max-width: 30em;
+}
+.hero__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 28px;
+}
+.hero__stores { gap: 12px; flex-wrap: wrap; }
+.hero__link {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 13.5px;
-  color: var(--muted);
-  padding: 6px 0;
-  user-select: none;
+  font-size: 14.5px;
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 1px;
+  transition: color .15s, border-color .15s, transform .15s;
 }
-.hero__news > summary::-webkit-details-marker { display: none; }
-.hero__news > summary::before {
-  content: "＋ ";
+.hero__link:hover {
   color: var(--primary);
-  font-weight: 800;
+  border-color: var(--primary);
+  transform: translateY(1px);
 }
-.hero__news[open] > summary::before { content: "− "; }
-.hero__news > summary:hover { color: var(--ink); }
-.hero__news .waitlist { margin-top: 10px; }
-.hero__link { font-family: var(--display); font-weight: 700; font-size: 14.5px; color: var(--ink); border-bottom: 2px solid var(--ink); padding-bottom: 1px; }
-.hero__link:hover { color: var(--primary); border-color: var(--primary); }
-.hero__meta { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 22px; font-size: 13.5px; font-weight: 600; color: var(--muted); }
-.hero__meta span { display: inline-flex; align-items: center; gap: 7px; }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 
 .hero__art {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 640px;
-  perspective: 1600px;
-  perspective-origin: 50% 40%;
+  min-height: 580px;
+  overflow: visible;
 }
-/* Phone-sized scene: chips are positioned relative to THIS box (300px wide),
-   not the wider hero__art column — so pixel offsets like `left: -70px`
-   land the chip a predictable distance from the phone body. NOT
-   transform-style: preserve-3d here — that would flatten z-index ordering
-   with children, letting chips render in front of the phone screen. Flat
-   2D stacking + z-index gives us the "chip tucks behind phone" behavior. */
-.phone-scene {
+.hero__stage {
   position: relative;
   width: 300px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 0 130px;
+  margin: 0 -130px;
 }
-.float-chip {
+.hero__phone-glow {
   position: absolute;
-  /* z:1 keeps chips BEHIND the phone (phone body is z:2 via phone-wrap
-     below) — so when a chip's orbit path crosses the phone silhouette it
-     tucks behind instead of covering the screen content. */
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 201, 77, 0.48) 0%, rgba(255, 77, 46, 0.16) 42%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(6px);
+  animation: glowPulse 5.5s ease-in-out infinite alternate;
+}
+.hero__spotlight {
+  position: absolute;
+  width: 260px;
+  height: 420px;
+  border-radius: 40% 40% 48% 48%;
+  background: radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.35) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(8px);
+  mix-blend-mode: soft-light;
+  animation: glowPulse 7s ease-in-out infinite alternate-reverse;
+}
+@keyframes glowPulse {
+  from { transform: scale(0.96); opacity: 0.85; }
+  to   { transform: scale(1.06); opacity: 1; }
+}
+.hero__ground {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  width: 240px;
+  height: 28px;
+  margin-left: -120px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(28, 24, 32, 0.22) 0%, transparent 72%);
+  filter: blur(6px);
+  pointer-events: none;
   z-index: 1;
-  background: var(--paper); border: 2px solid var(--ink);
+}
+
+.chip {
+  position: absolute;
+  z-index: 1;
+  padding: 10px 16px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  background: var(--paper);
+  border: 2px solid var(--ink);
   border-radius: 999px;
-  padding: 7px 13px;
-  font-family: var(--display); font-weight: 700;
-  font-size: 12.5px; box-shadow: var(--shadow-sm); white-space: nowrap;
-  display: inline-flex; align-items: center;
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-  /* Two-phase animation: chipEntry flies the chip from behind the phone
-     (translated by --in-x/--in-y toward the phone center, scaled 0)
-     out to its orbital position; then chipFloat3D takes over for the
-     gentle continuous orbit. `both` fill so entry state sticks before
-     the delay. */
-  animation:
-    chipEntry 0.9s cubic-bezier(.34,1.5,.64,1) var(--delay, 0s) both,
-    chipFloat3D 9s ease-in-out infinite calc(var(--delay, 0s) + 0.9s);
+  box-shadow: 0 4px 0 var(--ink);
+  white-space: nowrap;
+  pointer-events: none;
   opacity: 0;
+  animation:
+    chipPop 0.7s cubic-bezier(.34,1.35,.64,1) forwards,
+    chipFloat 6s ease-in-out infinite;
 }
-.float-chip .em { margin-right: 6px; font-size: 14px; }
-/* Fly-from-center entry — chip starts translated back toward the phone
-   center (undoes its outward offset), scaled small, opacity 0. Ends at its
-   natural position. Reads as "options orbit out from the phone". */
-@keyframes chipEntry {
-  0% {
-    opacity: 0;
-    transform: translate3d(var(--in-x, 0px), var(--in-y, 0px), -80px)
-               rotate(0deg) scale(0.4);
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)) scale(1);
-  }
+.chip--coral { background: #FFE8E0; }
+.chip--gold  { background: #FFF3D1; }
+.chip--sky   { background: #E5F2FF; }
+.chip--mint  { background: #E5F6EA; }
+
+.chip--a {
+  top: 14%;
+  right: calc(50% + 168px);
+  transform: rotate(-8deg);
+  animation-delay: 0.35s, 1.05s;
 }
-/* Playful hover: chip pops forward, rejoins orbit after. */
-.float-chip:hover {
-  animation: chipWiggle .5s cubic-bezier(.34,1.4,.64,1);
-  animation-fill-mode: both;
-  z-index: 3;
+.chip--c {
+  top: 58%;
+  right: calc(50% + 172px);
+  transform: rotate(6deg);
+  animation-delay: 0.55s, 1.25s;
 }
-@keyframes chipWiggle {
-  0%   { transform: translate3d(0, 0, 20px) rotate(var(--r,0deg)) scale(1);         opacity: 1; }
-  30%  { transform: translate3d(0, -6px, 40px) rotate(calc(var(--r,0deg) - 6deg)) scale(1.08); opacity: 1; }
-  60%  { transform: translate3d(0, -2px, 30px) rotate(calc(var(--r,0deg) + 4deg)) scale(1.05); opacity: 1; }
-  100% { transform: translate3d(0, 0, 20px) rotate(var(--r,0deg)) scale(1.03);       opacity: 1; }
+.chip--b {
+  top: 18%;
+  left: calc(50% + 168px);
+  transform: rotate(7deg);
+  animation-delay: 0.45s, 1.15s;
 }
-/* Transform + opacity only — box-shadow was repainting every frame and
-   causing the whole hero to jank. Static drop shadow reads fine. */
-@keyframes chipFloat3D {
-  0%   { transform: translate3d(0, 0, 0)    rotate(var(--r,0deg)) scale(1);    opacity: 1; }
-  25%  { transform: translate3d(0, -5px, 40px) rotate(var(--r,0deg)) scale(1.04); opacity: 1; }
-  50%  { transform: translate3d(0, -3px, 0)  rotate(var(--r,0deg)) scale(1);    opacity: 1; }
-  75%  { transform: translate3d(0, 3px, -60px) rotate(var(--r,0deg)) scale(0.92); opacity: 0.8; }
-  100% { transform: translate3d(0, 0, 0)    rotate(var(--r,0deg)) scale(1);    opacity: 1; }
+.chip--d {
+  top: 62%;
+  left: calc(50% + 172px);
+  transform: rotate(-5deg);
+  animation-delay: 0.65s, 1.35s;
+}
+
+@keyframes chipPop {
+  from { opacity: 0; filter: blur(2px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+@keyframes chipFloat {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -8px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .float-chip { animation: none; }
+  .hero__blob,
+  .hero__phone-glow,
+  .hero__spotlight,
+  .hero__kicker-stamp,
+  .chip { animation: none; }
+  .chip { opacity: 1; }
+  .hero__line {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .hero__em::after {
+    animation: none;
+    transform: rotate(-1.2deg) scaleX(1);
+  }
 }
 
-/* Per-chip positioning (matches the six chips in Hero.tsx). Moved from
-   inline styles so mobile media queries can flip them to `static` cleanly. */
-.float-chip--1 { top: 6%;  right: calc(100% + 20px); }
-.float-chip--2 { top: 8%;  left:  calc(100% + 20px); }
-.float-chip--3 { top: 44%; left:  calc(100% + 20px); }
-.float-chip--4 { bottom: 8%; left:  calc(100% + 20px); }
-.float-chip--5 { bottom: 8%; right: calc(100% + 20px); }
-.float-chip--6 { top: 44%; right: calc(100% + 20px); }
-
 /* ── Phone mockup ────────────────────────────────── */
-/* Wrapper picks up mouse events for the framer-motion tilt in Phone.tsx.
-   Own perspective so the phone tilts even if the outer perspective gets
-   flattened by an intermediate transform. */
 .phone-wrap {
   position: relative;
   width: 300px;
   flex-shrink: 0;
   transform-style: preserve-3d;
   perspective: 1400px;
-  perspective-origin: 50% 45%;
-  /* Pull the phone up so its bottom lines up with the hero copy,
-     not the marquee band below. */
-  margin-top: -60px;
-  /* Above the chips so orbit paths tuck behind the phone body. */
+  perspective-origin: 50% 40%;
+  margin-top: -24px;
   z-index: 2;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
+.phone-wrap:active { cursor: grabbing; }
 .phone {
-  position: relative; width: 300px; flex-shrink: 0;
-  background: var(--ink); border-radius: 44px; padding: 11px;
-  /* Layered shadow: tight rim + long soft cast for physical depth. */
+  position: relative;
+  width: 300px;
+  flex-shrink: 0;
+  background: #141218;
+  border-radius: 44px;
+  padding: 12px;
   box-shadow:
-    0 0 0 2px var(--ink),
-    0 22px 30px -18px rgba(28,24,32,0.35),
-    0 44px 70px -28px rgba(28,24,32,0.42),
-    0 6px 14px -6px rgba(28,24,32,0.3);
-  /* Rotation now driven by framer-motion (mouse-follow tilt in Phone.tsx).
-     transform-style keeps children (notch, screen, glare) in the same 3D
-     scene so they inherit the rotation cleanly. */
+    0 2px 0 rgba(28, 24, 32, 0.2),
+    0 24px 48px -20px rgba(28, 24, 32, 0.4),
+    0 48px 80px -36px rgba(28, 24, 32, 0.28);
   transform-style: preserve-3d;
   will-change: transform;
 }
 .phone::before {
-  /* Subtle glare stripe across the bezel — sells the "glass" feel. */
   content: "";
   position: absolute;
-  inset: 2px;
-  border-radius: 42px;
-  background: linear-gradient(115deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 68%, rgba(255,255,255,0.06) 100%);
+  inset: 3px;
+  border-radius: 41px;
+  background: linear-gradient(125deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 36%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.05) 100%);
   pointer-events: none;
   z-index: 6;
 }
+.phone__glare {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  opacity: 0.7;
+  border-radius: inherit;
+}
 @media (prefers-reduced-motion: reduce) {
-  .phone { transform: rotateY(-12deg) rotateX(5deg) !important; }
+  .phone { transform: rotateY(-6deg) rotateX(3deg) !important; }
 }
 .phone__notch {
-  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-  width: 92px; height: 26px; background: var(--ink); border-radius: 14px; z-index: 5;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92px;
+  height: 26px;
+  background: #141218;
+  border-radius: 14px;
+  z-index: 5;
 }
 .phone__screen {
-  background: var(--cream); border-radius: 34px; overflow: hidden;
-  aspect-ratio: 300 / 620; position: relative;
-  display: flex; flex-direction: column;
+  background: var(--cream);
+  border-radius: 34px;
+  overflow: hidden;
+  aspect-ratio: 300 / 620;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   background-image: radial-gradient(rgba(28,24,32,0.045) 1.1px, transparent 1.1px);
   background-size: 18px 18px;
 }
@@ -2477,7 +2808,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1); }
 .reveal.in { opacity: 1; transform: none; }
 .reveal.d1 { transition-delay: .08s; } .reveal.d2 { transition-delay: .16s; } .reveal.d3 { transition-delay: .24s; }
-@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } .float-chip { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
 
 /* ── Custom cursor ───────────────────────────────── */
 html.has-custom-cursor,
@@ -2559,16 +2890,8 @@ html.has-custom-cursor * { cursor: none !important; }
 .tier.pop:hover { box-shadow: 0 14px 0 var(--primary); }
 .tcard:hover { transform: translateY(-4px) rotate(0.4deg); }
 .quote:hover { transform: translateY(-4px); box-shadow: 0 12px 0 var(--ink); }
-.store-btn svg { transition: transform .3s cubic-bezier(.2,.9,.3,1.3); }
-.store-btn:hover svg { transform: rotate(-8deg) scale(1.1); }
-.nav__links a { position: relative; }
-.nav__links a::after {
-  content: ""; position: absolute; left: 0; right: 100%; bottom: -6px;
-  height: 2px; background: var(--primary); border-radius: 2px;
-  transition: right .25s cubic-bezier(.2,.7,.3,1);
-}
-.nav__links a:hover::after { right: 0; }
-.nav.scrolled { border-color: var(--ink); background: color-mix(in oklab, var(--cream) 94%, transparent); }
+.store-btn svg { transition: transform .35s cubic-bezier(.34,1.5,.64,1); }
+.store-btn:hover svg { transform: rotate(-10deg) scale(1.12); }
 
 /* ── Phone mockup content animations ─────────────── */
 /* Verdict-first narrative: question → winner + stamp + confetti (the reveal)
@@ -2652,12 +2975,16 @@ html.has-custom-cursor * { cursor: none !important; }
   .cluster { min-height: 380px; }
   .nav__links,
   .nav__primary { display: none; }
-  .nav__burger { display: inline-flex; margin-left: auto; }
-  .nav__row { height: 68px; }
+  .nav__burger { display: inline-flex; }
+  .nav__row {
+    display: flex;
+    height: 64px;
+  }
+  .nav__end { margin-left: auto; }
 }
 @media (max-width: 560px) {
   .team-grid { grid-template-columns: 1fr; }
-  .hero h1 .hl { white-space: normal; }
+  .hero__em { white-space: normal; }
   .footer__in { flex-direction: column; gap: 32px; }
   .footer__brand { max-width: none; }
   .footer__cols { gap: 32px 40px; }
@@ -2884,8 +3211,11 @@ html.has-custom-cursor * { cursor: none !important; }
 @media (max-width: 480px) {
   .wrap { padding: 0 18px; }
   .hero { padding-top: 32px; }
-  .phone, .phone-wrap, .phone-scene { width: 260px; }
-  .float-chip { font-size: 11.5px; padding: 6px 11px; }
+  .phone, .phone-wrap, .hero__stage { width: 260px; }
+  .hero__stage { padding: 0 100px; margin: 0 -100px; }
+  .chip { font-size: 12.5px; padding: 8px 13px; }
+  .chip--a, .chip--c { right: calc(50% + 142px); }
+  .chip--b, .chip--d { left: calc(50% + 142px); }
   .stat b { font-size: 34px; }
 }
 
@@ -3496,7 +3826,7 @@ html.has-custom-cursor * { cursor: none !important; }
   .statbar__in { gap: 14px; padding: 22px 16px; }
   .stat b { font-size: 30px; }
   .stat span { font-size: 12px; }
-  .hero__meta { gap: 12px 16px; font-size: 12.5px; }
+  .hero__eyebrow { font-size: 11px; }
   .footer__cols { gap: 24px 36px; }
   .fcol h5 { font-size: 12px; }
   .fcol__link { font-size: 14px; }
@@ -3507,20 +3837,18 @@ html.has-custom-cursor * { cursor: none !important; }
 /* Small phone (iPhone SE, small Android 360×640) */
 @media (max-width: 380px) {
   .wrap { padding: 0 14px; }
-  .nav__row { height: 62px; }
   .nav__brand-word { font-size: 22px; }
   .nav__brand-mark { width: 26px !important; height: 26px !important; }
-  .nav-drawer { top: 62px; }
+  .nav-drawer__panel { top: 72px; }
   .btn { font-size: 15px; padding: 12px 18px; }
   .btn--lg { font-size: 16px; padding: 14px 22px; border-radius: 14px; }
   .hero { padding-top: 24px; }
-  .hero h1 { font-size: 30px; overflow-wrap: break-word; }
-  .hero h1 .hl { white-space: normal; }
+  .hero__title { font-size: 30px; overflow-wrap: break-word; max-width: none; }
   .hero__sub { font-size: 15.5px; margin-top: 18px; }
   .hero__cta { margin-top: 24px; }
-  .hero__meta { margin-top: 16px; font-size: 12px; gap: 8px 14px; }
-  .phone, .phone-wrap, .phone-scene { width: 240px; }
-  .float-chip { font-size: 10.5px; padding: 5px 9px; }
+  .phone, .phone-wrap, .hero__stage { width: 240px; }
+  .chip { display: none; }
+  .hero__stage { padding: 0; margin: 0; }
   /* Keep waitlist input + button side-by-side on phone too — input shrinks
      to share the row instead of stacking above the button. */
   .waitlist__row { flex-direction: row; align-items: stretch; gap: 8px; flex-wrap: nowrap; }
@@ -3600,25 +3928,25 @@ html.has-custom-cursor * { cursor: none !important; }
    - ProSplit floating pcards clipped past the cluster edge
    - Final CTA store buttons stacked when they should stay inline */
 
-/* ≤560: hide chip options entirely — phone alone reads cleanly.
-   Also scale down the phone screen content so text stays readable
-   without overflowing the 260px mobile phone body. */
+/* ≤560: keep 2 chips; breathe between copy and phone. */
 @media (max-width: 560px) {
-  .float-chip { display: none !important; }
-  /* Space between hero copy and the phone — chips ki wajah se pehle
-     min-height 640px+ tha, ab wo hata to phone copy ke bilkul saath
-     chipak gaya. Zaroori vertical breathing room deta hun. */
+  .chip--c,
+  .chip--d { display: none; }
+  .hero__stage { padding: 0 110px; margin: 0 -110px; }
+  .chip--a { right: calc(50% + 148px); }
+  .chip--b { left: calc(50% + 148px); }
   .hero__art {
     min-height: 0;
-    margin-top: 48px;
-    padding: 24px 0 36px;
+    margin-top: 40px;
+    padding: 16px 0 28px;
   }
-  /* Phone-wrap base has margin-top: -60px to pull phone up on desktop
-     (so its bottom aligns with hero copy). On mobile it just kills the
-     breathing room. Reset. */
+  .hero__phone-glow {
+    width: 280px;
+    height: 280px;
+    opacity: 0.75;
+  }
   .phone-wrap { margin-top: 0 !important; }
-  /* Hero__grid gap on mobile — extra row-gap between copy and phone. */
-  .hero__grid { row-gap: 24px; }
+  .hero__grid { row-gap: 20px; }
 
   /* Phone screen content — shrink type + spacing so nothing clips or
      wraps oddly inside the narrower mobile phone. Base sizes are tuned

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 const LINKS = [
   { href: "/#how", label: "How it works" },
@@ -9,12 +9,22 @@ const LINKS = [
   { href: "/#teams", label: "For teams" },
   { href: "/#pricing", label: "Pricing" },
   { href: "/#faq", label: "FAQ" },
+];
+
+const DRAWER_LINKS = [
+  ...LINKS,
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },
 ];
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    const t = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -32,9 +42,9 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="nav" id="nav">
+      <nav className={`nav ${entered ? "nav--entered" : ""}`} id="nav">
         <div className="wrap nav__row">
-          <a className="nav__brand" href="/" aria-label="Verdict - home">
+          <a className="nav__brand nav__anim nav__anim--1" href="/" aria-label="Verdict - home">
             <Image
               src="/verdict-logo.png"
               alt=""
@@ -49,30 +59,38 @@ export default function Nav() {
           </a>
 
           <div className="nav__links">
-            {LINKS.map((l) => (
-              <a key={l.href} href={l.href}>
+            {LINKS.map((l, i) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className={`nav__anim nav__anim--${i + 2}`}
+              >
                 {l.label}
               </a>
             ))}
           </div>
 
-          <a className="nav__primary" href="/#get">
-            <span>Get the app</span>
-            <span className="nav__primary-arrow" aria-hidden>→</span>
-          </a>
+          <div className="nav__end">
+            <a className="nav__primary nav__anim nav__anim--7" href="/#get">
+              <span>Get the app</span>
+              <span className="nav__primary-arrow" aria-hidden>
+                →
+              </span>
+            </a>
 
-          <button
-            type="button"
-            className={`nav__burger ${open ? "is-open" : ""}`}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            aria-controls="nav-drawer"
-            onClick={() => setOpen((v) => !v)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
+            <button
+              type="button"
+              className={`nav__burger nav__anim nav__anim--7 ${open ? "is-open" : ""}`}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="nav-drawer"
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -88,10 +106,12 @@ export default function Nav() {
       >
         <div className="nav-drawer__panel">
           <div className="nav-drawer__links">
-            {LINKS.map((l) => (
+            {DRAWER_LINKS.map((l, i) => (
               <a
                 key={l.href}
                 href={l.href}
+                className="nav-drawer__link"
+                style={{ "--i": i } as CSSProperties}
                 onClick={() => setOpen(false)}
               >
                 {l.label}
