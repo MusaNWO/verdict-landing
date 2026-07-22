@@ -1,4 +1,5 @@
 import Phone from "./Phone";
+import RotatingWord from "./RotatingWord";
 import { APP_STORE_URL, PLAY_STORE_URL } from "./storeUrls";
 
 const CHIPS = [
@@ -33,7 +34,7 @@ export default function Hero() {
           <h1 className="hero__title">
             <span className="hero__line hero__line--1">Order in the</span>
             <span className="hero__line hero__line--2">
-              <em className="hero__em">group chat.</em>
+              <RotatingWord />
             </span>
           </h1>
 
